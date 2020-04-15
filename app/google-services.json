@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "711328651748",
+    "firebase_url": "https://climbing-workout.firebaseio.com",
+    "project_id": "climbing-workout",
+    "storage_bucket": "climbing-workout.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:711328651748:android:21768dfa4e265a5afd0ff1",
+        "android_client_info": {
+          "package_name": "com.example.climbingworkout"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "711328651748-qu2rq3ijca20hq4mdrnrs374lcsv0rur.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.climbingworkout",
+            "certificate_hash": "2f0d81a7fb4929b8d0b7fcc5dee6d8f867cdb1f4"
+          }
+        },
+        {
+          "client_id": "711328651748-gh7rd6ucpnj0hctbcfdes76a9v438s4r.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCFBoK5OnSQOu-P_Fmf6d69WPM3oHs8zoA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "711328651748-gh7rd6ucpnj0hctbcfdes76a9v438s4r.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
