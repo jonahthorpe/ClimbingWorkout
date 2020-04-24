@@ -32,12 +32,14 @@ dependencies {
     implementation 'androidx.navigation:navigation-fragment:2.2.1'
     implementation 'androidx.navigation:navigation-ui:2.2.1'
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
+    implementation 'com.google.firebase:firebase-auth:16.0.5'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
     implementation 'com.google.android.material:material:1.1.0'
 
     implementation 'com.google.firebase:firebase-database:19.2.1' // firebase realtime database
+    implementation 'com.google.firebase:firebase-auth:19.3.0'
 
     // Room components
     implementation "androidx.room:room-runtime:$rootProject.roomVersion"
@@ -53,4 +55,7 @@ dependencies {
 
 // Testing
     androidTestImplementation "androidx.arch.core:core-testing:$rootProject.coreTestingVersion"
+    implementation 'androidx.localbroadcastmanager:localbroadcastmanager:1.0.0'
+    implementation 'androidx.gridlayout:gridlayout:1.0.0'
+
 }

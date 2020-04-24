@@ -12,6 +12,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.List;
 
@@ -22,7 +26,7 @@ public class WorkoutOverview extends AppCompatActivity {
     private String beginnerText;
     private String intermediateText;
     private String advancedText;
-    String text;
+    private String text;
     private Intent intent;
     private int beginnerWorkoutId;
     private int intermediateWorkoutId;
@@ -84,6 +88,7 @@ public class WorkoutOverview extends AppCompatActivity {
         Button intermediateButton = findViewById(R.id.intermediate_button);
         Button advancedButton = findViewById(R.id.advanced_button);
         Button startButton = findViewById(R.id.start);
+        Button logButton = findViewById(R.id.logWorkout);
 
         beginnerButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -140,5 +145,19 @@ public class WorkoutOverview extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        logButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                if (user != null) {
+                    Log.i("username", user.getUid());
+                }else{
+                    Toast.makeText(getApplicationContext(), "Not Logged In",
+                            Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
     }
 }

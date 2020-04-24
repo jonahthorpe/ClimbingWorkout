@@ -12,7 +12,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Workout"></activity>
+        <activity android:name=".WorkoutComplete"></activity>
+        <activity android:name=".Workout" />
         <activity android:name=".WorkoutOverview" />
         <activity android:name=".MainActivity" />
         <activity android:name=".LogIn">
@@ -22,6 +23,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <service android:name=".Timer" />
     </application>
 
 </manifest>

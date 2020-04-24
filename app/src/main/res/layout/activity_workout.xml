@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".Workout">
+
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -17,10 +18,11 @@
     </FrameLayout>
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/exerciseTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
+        android:paddingTop="20dp"
         android:text="Scapular Pull Up"
         android:textAppearance="@style/TextAppearance.AppCompat.Display1" />
 
@@ -29,11 +31,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
+        android:paddingTop="20dp"
         android:text="Rest"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
     <TextView
-        android:id="@+id/textView4"
+        android:id="@+id/counter"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
@@ -43,7 +46,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:paddingTop="20dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -53,7 +57,7 @@
             android:orientation="vertical">
 
             <ImageView
-                android:id="@+id/imageView7"
+                android:id="@+id/previousExercise"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -65,7 +69,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="Previous Exercise"
+                android:text="Exercise"
                 android:textAppearance="@style/TextAppearance.AppCompat.Small"
                 android:textSize="11dp" />
         </LinearLayout>
@@ -78,7 +82,7 @@
             android:orientation="vertical">
 
             <ImageView
-                android:id="@+id/imageView4"
+                android:id="@+id/previousSet"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -90,7 +94,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="Previous Set"
+                android:text="Set"
                 android:textSize="11dp" />
         </LinearLayout>
 
@@ -102,7 +106,7 @@
             android:orientation="vertical">
 
             <ImageView
-                android:id="@+id/imageView5"
+                android:id="@+id/nextSet"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -114,7 +118,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="Next Set"
+                android:text="Set"
                 android:textSize="11dp" />
         </LinearLayout>
 
@@ -126,7 +130,7 @@
             android:orientation="vertical">
 
             <ImageView
-                android:id="@+id/imageView6"
+                android:id="@+id/nextExercise"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -138,7 +142,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="Next Exercise"
+                android:text="Exercise"
                 android:textSize="11dp" />
 
         </LinearLayout>
@@ -149,30 +153,35 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:paddingTop="30dp">
 
         <TextView
-            android:id="@+id/textView9"
+            android:id="@+id/reps"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="Reps: 10" />
+            android:paddingTop="13dp"
+            android:text="Reps: 10"
+            android:textSize="18dp" />
 
-        <ImageView
-            android:id="@+id/imageView8"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            app:srcCompat="@android:drawable/ic_media_play" />
+        <ImageButton
+            android:id="@+id/playButton"
+            android:layout_width="52dp"
+            android:layout_height="52dp"
+            android:layout_weight="0" />
 
         <TextView
-            android:id="@+id/textView10"
+            android:id="@+id/sets"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="Sets: 1/3" />
+            android:paddingTop="13dp"
+            android:text="Sets: 1/3"
+            android:textSize="18dp" />
+
     </LinearLayout>
 
 </LinearLayout>

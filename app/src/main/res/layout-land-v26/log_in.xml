@@ -61,7 +61,7 @@
             android:layout_marginTop="55dp"
             android:layout_marginEnd="0dp"
             android:layout_marginBottom="0dp"
-            android:visibility="gone"
+            android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.496"
@@ -71,7 +71,7 @@
 
 
             <EditText
-                android:id="@+id/username"
+                android:id="@+id/email"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
@@ -82,7 +82,7 @@
                 android:layout_marginEnd="18dp"
                 android:autofillHints=""
                 android:ems="10"
-                android:hint="@string/username"
+                android:hint="@string/email"
                 android:inputType="text"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -95,7 +95,7 @@
                 android:id="@+id/password"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/username"
+                android:layout_below="@+id/email"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentEnd="true"
                 android:layout_marginStart="18dp"
@@ -196,7 +196,7 @@
                     android:layout_marginTop="0dp"
                     android:layout_marginEnd="0dp"
                     android:layout_marginBottom="-1dp"
-                    android:visibility="visible"
+                    android:visibility="gone"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.496"
@@ -206,7 +206,7 @@
 
 
                     <EditText
-                        android:id="@+id/sign_up_username"
+                        android:id="@+id/sign_up_email"
                         android:layout_width="212dp"
                         android:layout_height="wrap_content"
                         android:layout_alignParentStart="true"
@@ -217,14 +217,14 @@
                         android:layout_marginEnd="18dp"
                         android:autofillHints=""
                         android:ems="10"
-                        android:hint="@string/username"
+                        android:hint="@string/email"
                         android:inputType="textPersonName" />
 
                     <EditText
                         android:id="@+id/sign_up_password"
                         android:layout_width="212dp"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/sign_up_username"
+                        android:layout_below="@+id/sign_up_email"
                         android:layout_alignParentStart="true"
                         android:layout_alignParentEnd="true"
                         android:layout_marginStart="18dp"

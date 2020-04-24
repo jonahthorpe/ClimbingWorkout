@@ -2,21 +2,27 @@ package com.example.climbingworkout;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.ViewModelProvider;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 public class LogIn extends AppCompatActivity {
@@ -26,22 +32,31 @@ public class LogIn extends AppCompatActivity {
     private Button signUpButtonTop;
     private Button logInButtonTop;
     private Button signUpButton;
-    private EditText usernameInputField;
+    private EditText emailInputField;
     private EditText passwordInputField;
-    private String username;
+    private EditText signUpPassword;
+    private EditText signUpPasswordConfirm;
+    private EditText signUpEmail;
+    private String email;
     private  String password;
+    private String confirmPassword;
     private DatabaseReference usersRef;
     private RelativeLayout signUpArea;
     private RelativeLayout logInArea;
     private int currentPage;
     private int topButtonSelected;
     private int topButtonNotSelected;
+    private FirebaseAuth mAuth;
 
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // Initialize Firebase Auth
+        mAuth = FirebaseAuth.getInstance();
+
         setContentView(R.layout.log_in);
 
         signUpArea = findViewById(R.id.sign_up_area);
@@ -63,7 +78,18 @@ public class LogIn extends AppCompatActivity {
             @Override
             public void onClick(View view)
             {
+                FirebaseAuth.getInstance().signOut();
                 changeActivity();
+            }
+        });
+
+        // on button click, attempt login
+        signUpButton = findViewById(R.id.sign_up);
+        signUpButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view)
+            {
+                signUp();
             }
         });
 
@@ -98,71 +124,60 @@ public class LogIn extends AppCompatActivity {
             }
         });
 
-        usernameInputField = findViewById(R.id.username);
+        emailInputField = findViewById(R.id.email);
         passwordInputField = findViewById(R.id.password);
+        signUpPassword = findViewById(R.id.sign_up_password);
+        signUpPasswordConfirm = findViewById(R.id.sign_up_password_confirm);
+        signUpEmail = findViewById(R.id.sign_up_email);
+
 
         // set up firebase database
         // save a local version of the database
         FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+
     }
 
-    ValueEventListener valueEventListener = new ValueEventListener() {
-        @Override
-        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-            // check the query returned data
-            if (dataSnapshot.exists()){
-                // iterate through it
-                for (DataSnapshot child: dataSnapshot.getChildren()){
-                    // get the user details
-                    User user = child.getValue(User.class);
-                    // check username and password matches
-                    if( user.getUsername().equals(username) && user.getPassword().equals(password)){
-                        // change screen
-                        changeActivity();
-                        // return input fields to default state
-                        usernameInputField.setBackgroundResource(R.drawable.normal_edit_text);
-                        passwordInputField.setBackgroundResource(R.drawable.normal_edit_text);
-                    }else{
-                        // update user
-                        passwordInputField.setError("Incorrect Password");
-                        passwordInputField.setBackgroundResource(R.drawable.error_edit_text);
-                        usernameInputField.setBackgroundResource(R.drawable.normal_edit_text);
-                    }
-                }
-            }else{
-                Log.i("username", username);
-                // update user
-                usernameInputField.setError("User Not Found");
-                usernameInputField.setBackgroundResource(R.drawable.error_edit_text);
-                passwordInputField.setBackgroundResource(R.drawable.normal_edit_text);
-            }
+    @Override
+    public void onStart() {
+        super.onStart();
+        // Check if user is signed in (non-null) and update UI accordingly.
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if (currentUser != null) {
+            changeActivity();
         }
-
-        @Override
-        public void onCancelled(@NonNull DatabaseError databaseError) {
-
-        }
-    };
+    }
 
 
-    public void logIn(){
+
+    public void logIn() {
         // get credentials
-        username = usernameInputField.getText().toString().trim();
+        email = emailInputField.getText().toString().trim();
         password = passwordInputField.getText().toString();
-        // if username/password is entered, try log in
-        if (!username.isEmpty() && !password.isEmpty()) {
-            usersRef = FirebaseDatabase.getInstance().getReference("users");
-            // sync database whenever there is a connection
-            usersRef.keepSynced(true);
-            Query query = usersRef.orderByChild("username").equalTo(username);
-            query.addListenerForSingleValueEvent(valueEventListener);
+        Log.i("email", email);
+        // if email/password is entered, try log in
+        if (!email.isEmpty() && !password.isEmpty()) {
+            mAuth.signInWithEmailAndPassword(email, password)
+                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if (task.isSuccessful()) {
+                                // Sign in success, update UI with the signed-in user's information
+                                FirebaseUser user = mAuth.getCurrentUser();
+                                changeActivity();
+                            } else {
+                                // If sign in fails, display a message to the user.
+                                Toast.makeText(getApplicationContext(), "Authentication failed.",
+                                        Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
         }else{
             // else, update user
-            if (username.isEmpty()){
-                usernameInputField.setError("Enter A Username");
-                usernameInputField.setBackgroundResource(R.drawable.error_edit_text);
+            if (email.isEmpty()){
+                emailInputField.setError("Enter A Email");
+                emailInputField.setBackgroundResource(R.drawable.error_edit_text);
             }else{
-                usernameInputField.setBackgroundResource(R.drawable.normal_edit_text);
+                emailInputField.setBackgroundResource(R.drawable.normal_edit_text);
             }
             if (password.isEmpty()){
                 passwordInputField.setError("Enter A Password");
@@ -175,6 +190,7 @@ public class LogIn extends AppCompatActivity {
 
     public void changeActivity(){
         Intent intent = new Intent(this, MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
         startActivity(intent);
     }
 
@@ -195,4 +211,80 @@ public class LogIn extends AppCompatActivity {
             signUpButtonTop.setBackgroundColor(topButtonSelected);
         }
     }
+
+    protected void signUp(){
+        Log.i("signun", "sign up");
+        password = signUpPassword.getText().toString();
+        confirmPassword = signUpPasswordConfirm.getText().toString();
+        email = signUpEmail.getText().toString();
+        Boolean valid = true;
+
+        if (email.isEmpty()) {
+            signUpEmail.setError("Enter An Email");
+            signUpEmail.setBackgroundResource(R.drawable.error_edit_text);
+            valid = false;
+        } else {
+            signUpEmail.setBackgroundResource(R.drawable.normal_edit_text);
+
+        }
+        if (password.isEmpty()) {
+            signUpPassword.setError("Enter A Password");
+            signUpPassword.setBackgroundResource(R.drawable.error_edit_text);
+            valid = false;
+        } else {
+            signUpPassword.setBackgroundResource(R.drawable.normal_edit_text);
+        }
+        if (confirmPassword.isEmpty()){
+            signUpPasswordConfirm.setError("Enter A Password");
+            signUpPasswordConfirm.setBackgroundResource(R.drawable.error_edit_text);
+            valid = false;
+        } else {
+            signUpPasswordConfirm.setBackgroundResource(R.drawable.normal_edit_text);
+        }
+
+        if (!password.equals(confirmPassword)){
+            valid = false;
+            signUpPasswordConfirm.setError("Passwords Don't Match");
+            signUpPasswordConfirm.setBackgroundResource(R.drawable.error_edit_text);
+        }
+
+        if (valid){
+            mAuth.createUserWithEmailAndPassword(email, password)
+                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if (task.isSuccessful()) {
+                                // Sign in success, update UI with the signed-in user's information
+                                FirebaseUser user = mAuth.getCurrentUser();
+                                // Write a message to the database
+                                FirebaseDatabase database = FirebaseDatabase.getInstance();
+                                DatabaseReference myRef = database.getReference("users");
+
+                                myRef.child(user.getUid()).setValue(new User("test", "test"));
+                                changeActivity();
+                            } else {
+                                // If sign in fails, display a message to the user.
+                                switch (task.getException().toString()){
+                                    case "com.google.firebase.auth.FirebaseAuthWeakPasswordException: The given password is invalid. [ Password should be at least 6 characters ]":
+                                        signUpPassword.setError("Password Too Weak, Should be at least 6 characters");
+                                        signUpPassword.setBackgroundResource(R.drawable.error_edit_text);
+                                        break;
+                                    case "com.google.firebase.auth.FirebaseAuthUserCollisionException: The email address is already in use by another account.":
+                                        signUpEmail.setError("Email Already In Use");
+                                        signUpEmail.setBackgroundResource(R.drawable.error_edit_text);
+                                        break;
+                                    case "com.google.firebase.auth.FirebaseAuthInvalidCredentialsException: The email address is badly formatted.":
+                                        signUpEmail.setError("Email Badly Formatted");
+                                        signUpEmail.setBackgroundResource(R.drawable.error_edit_text);
+                                        break;
+                                }
+                            }
+
+                            // ...
+                        }
+                    });
+        }
+
+    }
+
 }

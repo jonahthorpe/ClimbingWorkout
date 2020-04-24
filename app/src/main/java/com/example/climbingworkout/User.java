@@ -2,33 +2,12 @@ package com.example.climbingworkout;
 
 public class User {
 
-    String username;
-    String password;
+    public String u_id;
+    public String logged_workouts;
+    public String my_workouts;
 
-    public User(){
-
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-
-
-    public User(String username, String password) {
-        this.username = username;
-        this.password = password;
+    public User( String logged_workouts, String my_workouts) {
+        this.logged_workouts = logged_workouts;
+        this.my_workouts = my_workouts;
     }
 }
