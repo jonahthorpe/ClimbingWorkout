@@ -1,33 +1,33 @@
 package com.example.climbingworkout;
 
-import androidx.annotation.RawRes;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.util.Log;
-import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.MediaController;
 import android.widget.TextView;
 import android.widget.VideoView;
 
-import java.util.Collections;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
-import java.util.Set;
 
 public class Workout extends AppCompatActivity {
 
@@ -51,14 +51,20 @@ public class Workout extends AppCompatActivity {
     private ImageView previousSet;
     private ImageView nextExercise;
     private ImageView nextSet;
+    private Boolean resting = true;
+    private TextView timer_label;
+    private Boolean isMyWokout;
+    private  WorkoutExercise exercise;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_workout);
         intent = getIntent();
+        isMyWokout = intent.getBooleanExtra("myWorkout", true);
 
 
+        timer_label = findViewById(R.id.timer_label);
 
 
         mWorkoutViewModel = new ViewModelProvider(this).get(WorkoutViewModel.class);
@@ -66,17 +72,7 @@ public class Workout extends AppCompatActivity {
 
         playButton = findViewById(R.id.playButton);
         playButton.setBackgroundResource(android.R.drawable.ic_media_play);
-        playButton.setOnClickListener(v -> {
-            if (playing){
-                playing = false;
-                playButton.setBackgroundResource(android.R.drawable.ic_media_play);
-                pauseTimer();
-            }else{
-                playButton.setBackgroundResource(android.R.drawable.ic_media_pause);
-                playing = true;
-                startTimer();
-            }
-        });
+
 
         previousExercise = findViewById(R.id.previousExercise);
         nextExercise = findViewById(R.id.nextExercise);
@@ -96,7 +92,7 @@ public class Workout extends AppCompatActivity {
 
     }
 
-    private void startTimer() {
+    private void startTimerRest() {
         endTime = System.currentTimeMillis() + timeLeft;
         timer = new CountDownTimer(timeLeft, 1000) {
             public void onTick(long millisUntilFinished) {
@@ -113,7 +109,36 @@ public class Workout extends AppCompatActivity {
                 set += 1;
                 counter.setText("0:00");
                 test = null;
+                if (!resting){
+                    resting = true;
+                }
                 updateUI();
+            }
+
+        }.start();
+    }
+
+    private void startTimerExercise(int restTime) {
+        endTime = System.currentTimeMillis() + timeLeft;
+        timer = new CountDownTimer(timeLeft, 1000) {
+            public void onTick(long millisUntilFinished) {
+                timeLeft = millisUntilFinished;
+                long secondsRemaining = timeLeft / 1000;
+                double minutes = secondsRemaining / 60;
+                double seconds = secondsRemaining % 60;
+                counter.setText( (int) minutes + ":" + String.format("%02d", (int) seconds));
+            }
+
+            public void onFinish() {
+                //playButton.setBackgroundResource(android.R.drawable.ic_media_play);
+                counter.setText("0:00");
+                timer_label.setText("Rest");
+                test = null;
+                if (!resting){
+                    resting = true;
+                }
+                timeLeft = restTime * 1000;
+                startTimerRest();
             }
 
         }.start();
@@ -130,6 +155,9 @@ public class Workout extends AppCompatActivity {
         outState.putBoolean("playing", playing);
         outState.putLong("endTime", endTime);
         outState.putInt("currentExercise", currentExercise);
+        outState.putInt("currentSet", set);
+        outState.putBoolean("resting", resting);
+        outState.putInt("rest", exercise.getRest());
     }
 
     @Override
@@ -139,12 +167,19 @@ public class Workout extends AppCompatActivity {
         timeLeft = savedInstanceState.getLong("timeLeft");
         playing = savedInstanceState.getBoolean("playing");
         currentExercise = savedInstanceState.getInt("currentExercise");
+        set = savedInstanceState.getInt("currentSet");
+        resting = savedInstanceState.getBoolean("resting");
+        int rest = savedInstanceState.getInt("rest");
 
         test = "a";
         if (playing) {
             endTime = savedInstanceState.getLong("endTime");
             timeLeft = endTime - System.currentTimeMillis() ;
-            startTimer();
+            if (resting) {
+                startTimerRest();
+            }else{
+                startTimerExercise(rest);
+            }
             playButton.setBackgroundResource(android.R.drawable.ic_media_pause);
         }
     }
@@ -154,7 +189,8 @@ public class Workout extends AppCompatActivity {
     }
 
     protected void testfunc(List<WorkoutExercise> exercises){
-        WorkoutExercise exercise = exercises.get(currentExercise);
+        exercise = exercises.get(currentExercise);
+        Log.i("exercise", exercise.getExercise());
         if (set > exercise.getSets()){
             currentExercise += 1;
             if (currentExercise >= exercises.size()){
@@ -166,48 +202,69 @@ public class Workout extends AppCompatActivity {
             }
         }
 
+        // cant use separate if statements as the state could fall into multiple at once
+        // for example if there is only 1 exercise, it will be both the first and last thus both
+        // if statements need to entered
+
+        nextSet.setColorFilter(null);
+        previousSet.setColorFilter(null);
         if (set == 1){
             previousSet.setColorFilter(Color.argb(150,200,200,200));
-            nextSet.setColorFilter(null);
-        }else if(set == exercise.getSets()){
-            nextSet.setColorFilter(Color.argb(150,200,200,200));
-            previousSet.setColorFilter(null);
-        }else{
-            nextSet.setColorFilter(null);
-            previousSet.setColorFilter(null);
+            //nextSet.setColorFilter(null);
         }
+        if(set == exercise.getSets()){
+            nextSet.setColorFilter(Color.argb(150,200,200,200));
+            //previousSet.setColorFilter(null);
+        }
+
+
+        nextExercise.setColorFilter(null);
+        previousExercise.setColorFilter(null);
 
         if (currentExercise == 0){
             previousExercise.setColorFilter(Color.argb(150,200,200,200));
-            nextExercise.setColorFilter(null);
-        }else if(currentExercise == (exercises.size()-1)){
+            //nextExercise.setColorFilter(null);
+        }
+        if(currentExercise == (exercises.size()-1)){
             nextExercise.setColorFilter(Color.argb(150,200,200,200));
-            previousExercise.setColorFilter(null);
-        }else{
-            nextExercise.setColorFilter(null);
-            previousExercise.setColorFilter(null);
+            //previousExercise.setColorFilter(null);
         }
 
+
+
+
         exerciseTitle.setText(exercise.getExercise());
-        reps.setText("Reps: " + exercise.getReps());
+        if (exercise.getRepType()) {
+            reps.setText("Time: " + exercise.getReps() + " seconds");
+        }else {
+            reps.setText("Reps: " + exercise.getReps());
+        }
         sets.setText("Sets: "+ set +"/" + exercise.getSets());
 
-
-        mWorkoutViewModel = new ViewModelProvider(this).get(WorkoutViewModel.class);
-        mWorkoutViewModel.getExerciseVid(exercise.getExercise()).observe(this, exerciseVids -> {
-            int id = getResources().getIdentifier(exerciseVids.get(0), "raw", getPackageName());
-            String videoPath = "android.resource://" + getPackageName() + "/" + id;
-            Uri uri = Uri.parse(videoPath);
-            workoutDemoVid.setVideoURI(uri);
-        });
+        if (!isMyWokout) {
+            mWorkoutViewModel = new ViewModelProvider(this).get(WorkoutViewModel.class);
+            mWorkoutViewModel.getExerciseVid(exercise.getExercise()).observe(this, exerciseVids -> {
+                int id = getResources().getIdentifier(exerciseVids.get(0), "raw", getPackageName());
+                String videoPath = "android.resource://" + getPackageName() + "/" + id;
+                Uri uri = Uri.parse(videoPath);
+                workoutDemoVid.setVideoURI(uri);
+            });
+        }
 
 
         if(test == null){
-            long restTime = exercise.getRest();
-            double minutes = restTime / 60;
-            double seconds = restTime % 60;
-            counter.setText( (int) minutes + ":" + String.format("%02d", (int) seconds));
-            timeLeft = exercise.getRest() * 1000;
+            long time;
+            // rep type return true if time
+            if (exercise.getRepType()){
+                resting = false;
+                time = Long.parseLong(exercise.getReps());
+            }else {
+                time = exercise.getRest();
+            }
+            double minutes = time / 60;
+            double seconds = time % 60;
+            counter.setText((int) minutes + ":" + String.format("%02d", (int) seconds));
+            timeLeft = time * 1000;
         }else {
             long restTime = timeLeft / 1000;
             double minutes = restTime / 60;
@@ -215,15 +272,66 @@ public class Workout extends AppCompatActivity {
             counter.setText( (int) minutes + ":" + String.format("%02d", (int) seconds));
         }
 
+        if (resting){
+            timer_label.setText("Rest");
+        }else{
+            timer_label.setText("Exercise Time");
+        }
+
+        int restTime = exercise.getRest();
+        playButton.setOnClickListener(v -> {
+            if (playing){
+                playing = false;
+                playButton.setBackgroundResource(android.R.drawable.ic_media_play);
+                pauseTimer();
+            }else{
+                playButton.setBackgroundResource(android.R.drawable.ic_media_pause);
+                playing = true;
+                if (resting) {
+                    startTimerRest();
+                }else{
+                    startTimerExercise(restTime);
+                }
+            }
+        });
+
         setNavigationButtonOnClicks(exercise, exercises);
 
 
     }
 
     protected void updateUI(){
-        mWorkoutViewModel.getExercises(intent.getIntExtra("workout", 0)).observe(this, exercises ->{
-            testfunc(exercises);
-        });
+        if (isMyWokout){
+            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+            // Write a message to the database
+            FirebaseDatabase database = FirebaseDatabase.getInstance();
+            DatabaseReference myRef = database.getReference("users/" + user.getUid() + "/my_workouts/" + intent.getStringExtra("workout"));
+            Log.i("exrecise", isMyWokout + "");
+            // Read from the database
+            myRef.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    // This method is called once with the initial value and again
+                    // whenever data at this location is updated.
+                    if (dataSnapshot.exists()) {
+                        FirebaseWorkout workout = dataSnapshot.getValue(FirebaseWorkout.class);
+                        ArrayList<WorkoutExercise> exercises = workout.getExercises();
+                        testfunc(exercises);
+                    }
+
+                }
+
+                @Override
+                public void onCancelled(DatabaseError error) {
+                    // Failed to read value
+
+                }
+            });
+        }else {
+            mWorkoutViewModel.getExercises(intent.getIntExtra("workout", 0)).observe(this, exercises -> {
+                testfunc(exercises);
+            });
+        }
     }
 
     protected void setNavigationButtonOnClicks(WorkoutExercise exercise, List<WorkoutExercise> exercises){
@@ -231,7 +339,10 @@ public class Workout extends AppCompatActivity {
             if (currentExercise >= 1){
                 currentExercise -= 1;
                 set = 1;
-                timer.cancel();
+                test = null;
+                if (timer != null){
+                    timer.cancel();
+                }
                 playButton.setBackgroundResource(android.R.drawable.ic_media_play);
                 updateUI();
             }
@@ -240,7 +351,10 @@ public class Workout extends AppCompatActivity {
             if (currentExercise < (exercises.size()-1)){
                 currentExercise += 1;
                 set = 1;
-                timer.cancel();
+                test = null;
+                if (timer != null){
+                    timer.cancel();
+                }
                 playButton.setBackgroundResource(android.R.drawable.ic_media_play);
                 updateUI();
             }
@@ -248,7 +362,10 @@ public class Workout extends AppCompatActivity {
         previousSet.setOnClickListener(v->{
             if (set > 1){
                 set -= 1;
-                timer.cancel();
+                test = null;
+                if (timer != null){
+                    timer.cancel();
+                }
                 playButton.setBackgroundResource(android.R.drawable.ic_media_play);
                 updateUI();
             }
@@ -256,7 +373,10 @@ public class Workout extends AppCompatActivity {
         nextSet.setOnClickListener(v->{
             if (set < exercise.getSets()){
                 set +=1;
-                timer.cancel();
+                test = null;
+                if (timer != null){
+                    timer.cancel();
+                }
                 playButton.setBackgroundResource(android.R.drawable.ic_media_play);
                 updateUI();
             }

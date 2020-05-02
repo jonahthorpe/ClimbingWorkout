@@ -260,7 +260,7 @@ public class LogIn extends AppCompatActivity {
                                 FirebaseDatabase database = FirebaseDatabase.getInstance();
                                 DatabaseReference myRef = database.getReference("users");
 
-                                myRef.child(user.getUid()).setValue(new User("test", "test"));
+                                myRef.child(user.getUid()).setValue(new User("empty", "empty"));
                                 changeActivity();
                             } else {
                                 // If sign in fails, display a message to the user.

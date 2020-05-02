@@ -20,4 +20,7 @@ public interface WorkoutCardDao {
     @Query("SELECT * from workout_card_table ORDER BY workoutCategory ASC")
     LiveData<List<WorkoutCard>> getWorkoutCards();
 
+    @Query("SELECT * from workout_card_table where cardID = :id")
+    LiveData<WorkoutCard> getCard(int id);
+
 }

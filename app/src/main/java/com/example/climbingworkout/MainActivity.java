@@ -25,6 +25,8 @@ public class MainActivity extends AppCompatActivity {
     private WorkoutsFragment workoutsPage = new WorkoutsFragment();
     private WorkoutHistoryFragment workoutHistoryPage = new WorkoutHistoryFragment();
     private MyWorkoutsFragment myWorkoutFragment = new MyWorkoutsFragment();
+    private int currentScreen;
+    private Fragment selectedFragment;
 
 
 
@@ -36,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
         BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
         bottomNav.setOnNavigationItemSelectedListener(navListener);
 
-
+        currentScreen = 0;
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                 workoutsPage).commit();
 
@@ -82,16 +84,19 @@ public class MainActivity extends AppCompatActivity {
 
     private BottomNavigationView.OnNavigationItemSelectedListener navListener =
             item -> {
-                Fragment selectedFragment = null;
+                selectedFragment = null;
 
                 switch (item.getItemId()){
                     case R.id.workouts_nav:
+                        currentScreen = 0;
                         selectedFragment = workoutsPage;
                         break;
                     case R.id.workout_history_nav:
+                        currentScreen = 1;
                         selectedFragment = workoutHistoryPage;
                         break;
                     case R.id.my_workouts_nav:
+                        currentScreen = 2;
                         selectedFragment = myWorkoutFragment;
                         break;
                 }
@@ -100,4 +105,32 @@ public class MainActivity extends AppCompatActivity {
                         selectedFragment).commit();
                 return true;
             };
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt("currentScreen", currentScreen);
+
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+
+        currentScreen = savedInstanceState.getInt("currentScreen");
+        switch (currentScreen){
+            case 0:
+                selectedFragment = workoutsPage;
+                break;
+            case 1:
+                selectedFragment = workoutHistoryPage;
+                break;
+            case 2:
+                selectedFragment = myWorkoutFragment;
+                break;
+        }
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                selectedFragment).commit();
+
+    }
 }

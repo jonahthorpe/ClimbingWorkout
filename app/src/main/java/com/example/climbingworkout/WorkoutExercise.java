@@ -41,6 +41,9 @@ public class WorkoutExercise {
         this.position = position;
     }
 
+    public WorkoutExercise() {
+    }
+
     public int getWorkoutID() {
         return workoutID;
     }

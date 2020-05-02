@@ -16,7 +16,10 @@ import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.Calendar;
 import java.util.List;
 
 public class WorkoutOverview extends AppCompatActivity {
@@ -41,7 +44,7 @@ public class WorkoutOverview extends AppCompatActivity {
         Intent intentP = getIntent();
         intent  = new Intent(this, Workout.class);
 
-        TextView workoutDescription = findViewById(R.id.workoutDescription);
+        TextView workoutDescription = findViewById(R.id.workout_description);
         beginnerText = "Beginner\n";
         intermediateText = "Intermediate\n";
         advancedText = "Advanced\n";
@@ -142,6 +145,7 @@ public class WorkoutOverview extends AppCompatActivity {
                         intent.putExtra("workout", advancedWorkoutId);
                         break;
                 }
+                intent.putExtra("myWorkout", false);
                 startActivity(intent);
             }
         });
@@ -152,6 +156,25 @@ public class WorkoutOverview extends AppCompatActivity {
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                 if (user != null) {
                     Log.i("username", user.getUid());
+                    FirebaseDatabase database = FirebaseDatabase.getInstance();
+                    DatabaseReference myRef = database.getReference("users/" + user.getUid());
+
+                    int id = 0;
+                    switch(currentSelection){
+                        case 0:
+                            id = beginnerWorkoutId;
+                            break;
+                        case 1:
+                            id = intermediateWorkoutId;
+                            break;
+                        case 2:
+                            id = advancedWorkoutId;
+                            break;
+                    }
+
+                    myRef.child("logged_workouts").push().setValue(new WorkoutLog(String.valueOf(id), Calendar.getInstance().getTime(), false));
+                    Toast.makeText(getApplicationContext(), "Logged",
+                            Toast.LENGTH_SHORT).show();
                 }else{
                     Toast.makeText(getApplicationContext(), "Not Logged In",
                             Toast.LENGTH_SHORT).show();

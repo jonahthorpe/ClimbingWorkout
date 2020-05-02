@@ -38,4 +38,8 @@ class WorkoutRepository {
 
     LiveData<List<String>> getExerciseVid(String exercise){return mExerciseDao.getExerciseVid(exercise);}
 
+    LiveData<WorkoutDifficulty> getWorkout(int id){return mWorkoutDifficultyDao.getWorkout(id);}
+
+    LiveData<WorkoutCard> getCard(int id){return mWorkoutCardDao.getCard(id);}
+
 }

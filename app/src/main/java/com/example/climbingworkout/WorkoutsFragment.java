@@ -58,14 +58,14 @@ public class WorkoutsFragment extends Fragment {
                     // create category
                     createCategory(card);
                 }
-
+                Resources r = getResources();
                 // create and add card to category
                 CardView cardView = new CardView(getContext());
                 LinearLayout.LayoutParams cardViewParams =  new LinearLayout.LayoutParams(
-                        dpToPx(300f),
-                        dpToPx(200f)
+                        Utility.dpToPx(300f,r),
+                        Utility.dpToPx(200f,r)
                 );
-                cardViewParams.setMarginEnd(dpToPx(10f));
+                cardViewParams.setMarginEnd(Utility.dpToPx(10f,r));
                 cardView.setLayoutParams(cardViewParams);
 
                 TextView textView = new TextView(getContext());
@@ -130,8 +130,9 @@ public class WorkoutsFragment extends Fragment {
                 LinearLayout.LayoutParams.WRAP_CONTENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT
         );
-        categoryTitleLayoutParams.setMarginStart(dpToPx(10f));
-        categoryTitleLayoutParams.setMarginEnd(dpToPx(10f));
+        Resources r = getResources();
+        categoryTitleLayoutParams.setMarginStart((Utility.dpToPx(10f,r)));
+        categoryTitleLayoutParams.setMarginEnd((Utility.dpToPx(10f,r)));
         categoryTitle.setLayoutParams(categoryTitleLayoutParams);
         categoryTitle.setTextAppearance(getContext(), android.R.style.TextAppearance_DeviceDefault_Large);
         categoryContainer.addView(categoryTitle);
@@ -154,25 +155,15 @@ public class WorkoutsFragment extends Fragment {
                 LinearLayout.LayoutParams.WRAP_CONTENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT
                 );
-
-        cardRowParams.setMargins(dpToPx(10f), dpToPx(10f), dpToPx(10f), dpToPx(20f));
+        Resources r = getResources();
+        cardRowParams.setMargins(Utility.dpToPx(10f,r),
+                                Utility.dpToPx(10f, r),
+                                Utility.dpToPx(10f, r),
+                                Utility.dpToPx(10f, r));
         cardRow.setLayoutParams(cardRowParams);
         cardRow.setOrientation(LinearLayout.HORIZONTAL);
         cardScrollView.addView(cardRow);
     }
 
-    private int dpToPx(Float dp){
-        /*
-        https://stackoverflow.com/questions/4605527/converting-pixels-to-dp
-        05/04/2020
-         */
-        Resources r = getResources();
-        int px = Math.round(TypedValue.applyDimension(
-                TypedValue.COMPLEX_UNIT_DIP,
-                dp,
-                r.getDisplayMetrics()
-        ));
-        return px;
-    }
 
 }

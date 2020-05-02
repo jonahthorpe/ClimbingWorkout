@@ -19,4 +19,7 @@ public interface WorkoutDifficultyDao {
     @Query("SELECT * from workout_difficulty_table WHERE cardID = :id")
     LiveData<List<WorkoutDifficulty>> getWorkouts(int id);
 
+    @Query("Select * from workout_difficulty_table where workoutID = :id")
+    LiveData<WorkoutDifficulty> getWorkout(int id);
+
 }

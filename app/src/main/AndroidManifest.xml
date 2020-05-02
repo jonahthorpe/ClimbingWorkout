@@ -12,7 +12,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".WorkoutComplete"></activity>
+        <activity android:name=".FirebaseWorkoutOverview"></activity>
+        <activity android:name=".AddWorkout" />
+        <activity android:name=".WorkoutComplete" />
         <activity android:name=".Workout" />
         <activity android:name=".WorkoutOverview" />
         <activity android:name=".MainActivity" />
