@@ -16,6 +16,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.MediaController;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.VideoView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -271,8 +272,9 @@ public class Workout extends AppCompatActivity {
         if (set > exercise.getSets()){
             currentExercise += 1;
             if (currentExercise >= exercises.size()){
-                Intent moveToCompleted = new Intent(getApplicationContext(), WorkoutComplete.class);
-                startActivity(moveToCompleted);
+                Toast.makeText(getApplicationContext(), "Well Done!\nWorkout Completed!",
+                        Toast.LENGTH_SHORT).show();
+                finish();
             }else {
                 set = 1;
                 exercise = exercises.get(currentExercise);

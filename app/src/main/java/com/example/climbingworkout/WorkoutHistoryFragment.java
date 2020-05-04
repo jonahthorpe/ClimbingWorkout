@@ -18,6 +18,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.room.OnConflictStrategy;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -44,13 +45,13 @@ public class WorkoutHistoryFragment extends Fragment {
     private LinearLayout sunday;
     private ImageView previousMonth;
     private ImageView nextMonth;
-    int month;
+    int month = 0;
     private TextView currentDateField;
     private Calendar currentCalendar;
     private List<WorkoutLog> loggedWorkouts;
     private Calendar loggedCalendar;
     private Resources r;
-    private Calendar selectedCalendar;
+    private Calendar selectedCalendar = Calendar.getInstance();
     private View view;
     private int row;
     private int selectedId;
@@ -61,9 +62,7 @@ public class WorkoutHistoryFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        Log.i("control", "control");
         view =  inflater.inflate(R.layout.fragment_workout_history, container, false);
-
         r = getResources();
         selectedId = 0;
         mHistoryViewModel = new ViewModelProvider(this).get(WorkoutHistoryViewModel.class);
@@ -82,17 +81,16 @@ public class WorkoutHistoryFragment extends Fragment {
 
         loggedCalendar = Calendar.getInstance();
         currentCalendar = Calendar.getInstance();
-        selectedCalendar = Calendar.getInstance();
 
-        month = 0;
-        createCalendar(view, month);
+
+        createCalendar(month);
 
         previousMonth = view.findViewById(R.id.prevMonth);
         previousMonth.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
                 month -= 1;
-                createCalendar(view, month);
+                createCalendar( month);
             }
         });
 
@@ -101,7 +99,7 @@ public class WorkoutHistoryFragment extends Fragment {
             @Override
             public void onClick(View view){
                 month += 1;
-                createCalendar(view, month);
+                createCalendar( month);
             }
         });
 
@@ -109,7 +107,33 @@ public class WorkoutHistoryFragment extends Fragment {
         return view;
     }
 
-    private void createCalendar(View view, int month){
+    public int getMonth() {
+        return month;
+    }
+
+    public void setMonth(int month) {
+        this.month = month;
+    }
+
+    public int getSelectedYear(){
+        return selectedCalendar.get(Calendar.YEAR);
+    }
+
+    public int getSelectedMonth(){
+        return selectedCalendar.get(Calendar.MONTH);
+    }
+
+    public int getSelectedDay(){
+        return selectedCalendar.get(Calendar.DAY_OF_MONTH);
+    }
+
+    public void setSelectedCalendar(int day, int month, int year) {
+        selectedCalendar.set(Calendar.MONTH, month);
+        selectedCalendar.set(Calendar.DAY_OF_MONTH, day);
+        selectedCalendar.set(Calendar.YEAR, year);
+    }
+
+    private void createCalendar(int month){
         monday.removeAllViews();
         tuesday.removeAllViews();
         wednesday.removeAllViews();
@@ -265,7 +289,11 @@ public class WorkoutHistoryFragment extends Fragment {
                                 public void onClick(View v) {
                                     TextView text = view.findViewById(selectedId);
                                     Log.i("selected", selectedId + "");
+                                    try{
                                     text.setBackgroundResource(0);
+                                    }catch (Exception e){
+
+                                    }
                                     selectedId =  v.getId();
                                     selectedCalendar = calendar;
                                     selectedCalendar.set(Calendar.DAY_OF_MONTH,selectedId);
@@ -455,4 +483,11 @@ public class WorkoutHistoryFragment extends Fragment {
     }
 
 
+
+
 }
+
+
+
+
+

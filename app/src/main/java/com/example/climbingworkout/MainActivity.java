@@ -33,12 +33,16 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
         BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
         bottomNav.setOnNavigationItemSelectedListener(navListener);
 
         currentScreen = 0;
-        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                workoutsPage).commit();
+
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                    workoutsPage).commit();
+
+
 
 
     }
@@ -57,7 +61,6 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
                 return true;
             case R.id.find_gyms:
-                Log.i("findGym", "asd");
                 Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.google.com/search?q=climbing+gyms+around+me"));
                 startActivity(browserIntent);
             default:
@@ -112,13 +115,21 @@ public class MainActivity extends AppCompatActivity {
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putInt("currentScreen", currentScreen);
+        outState.putInt("month", workoutHistoryPage.getMonth());
+        outState.putInt("selectedMonth", workoutHistoryPage.getSelectedMonth());
+        outState.putInt("selectedYear", workoutHistoryPage.getSelectedYear());
+        outState.putInt("selectedDay", workoutHistoryPage.getSelectedDay());
+        //Save the fragment's instance
 
     }
 
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-
+        int month = savedInstanceState.getInt("month");
+        int selectedMonth = savedInstanceState.getInt("selectedMonth");
+        int selectedDay = savedInstanceState.getInt("selectedDay");
+        int selectedYear = savedInstanceState.getInt("selectedYear");
         currentScreen = savedInstanceState.getInt("currentScreen");
         switch (currentScreen){
             case 0:
@@ -126,13 +137,15 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case 1:
                 selectedFragment = workoutHistoryPage;
+                workoutHistoryPage.setSelectedCalendar(selectedDay, selectedMonth, selectedYear);
+                workoutHistoryPage.setMonth(month);
                 break;
             case 2:
                 selectedFragment = myWorkoutFragment;
                 break;
         }
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                selectedFragment).commit();
+               selectedFragment).commit();
 
     }
 }

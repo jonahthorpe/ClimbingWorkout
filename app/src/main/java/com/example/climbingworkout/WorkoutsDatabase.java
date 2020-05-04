@@ -60,6 +60,8 @@ public abstract class WorkoutsDatabase extends RoomDatabase {
                 exerciseDao.insert(exercise);
                 exercise = new Exercise("Pull Up Negatives", "negative_pull_up_no_sound");
                 exerciseDao.insert(exercise);
+                exercise = new Exercise("French Pull Ups", "frenchies_up_no_sound");
+                exerciseDao.insert(exercise);
                 WorkoutExerciseDao workoutExerciseDao = INSTANCE.workoutExerciseDao();
                 workoutExerciseDao.deleteAll();
                 WorkoutExercise workoutExercise = new WorkoutExercise(1, "Scapular Pull Ups", 3, "10", 0, 120, 1, 0, 0);
@@ -97,19 +99,35 @@ public abstract class WorkoutsDatabase extends RoomDatabase {
                             "For the sets of pull ups, do as many as you can up to five. If you can't do any, you can skip this set but make sure to at least try one pull up to view progress and see if you can perform a pull up." +
                             "Once you can do three sets of five pull ups, you can try the intermediate workout.");
                     difficultyDao.insert(difficulty);
-                        workoutExercise = new WorkoutExercise(1, "Scapular Pull Ups", 3, "10", 0, 10, 1, 0, 0);
+                        workoutExercise = new WorkoutExercise(1, "Scapular Pull Ups", 3, "10", 0, 120, 1, 0, 0);
                         workoutExerciseDao.insert(workoutExercise);
-                        workoutExercise = new WorkoutExercise(1, "Pull Ups", 3, "max", 0, 8, 2, 0, 0);
+                        workoutExercise = new WorkoutExercise(1, "Pull Ups", 3, "max", 0, 120, 2, 0, 0);
                         workoutExerciseDao.insert(workoutExercise);
-                        workoutExercise = new WorkoutExercise(1, "Body Weight Rows", 3, "8", 0, 1, 3, 0, 0);
+                        workoutExercise = new WorkoutExercise(1, "Body Weight Rows", 3, "8", 0, 120, 3, 0, 0);
                         workoutExerciseDao.insert(workoutExercise);
-                        workoutExercise = new WorkoutExercise(1, "Pull Up Negatives", 3, "8", 0, 1, 4, 0, 0);
+                        workoutExercise = new WorkoutExercise(1, "Pull Up Negatives", 3, "8", 0, 120, 4, 0, 0);
                         workoutExerciseDao.insert(workoutExercise);
-                    difficulty = new WorkoutDifficulty(2, 7, "Advanced", "");
+
+
+                    difficulty = new WorkoutDifficulty(2, 7, "Advanced", "This workout is designed to increase you pull past ten. If this is too easy, you can try increasing the reps and sets for all exercises, as well as reducing rest.");
                     difficultyDao.insert(difficulty);
-                    difficulty = new WorkoutDifficulty(3, 7, "Intermediate", "");
+                        workoutExercise = new WorkoutExercise(2, "Scapular Pull Ups", 3, "12", 0, 120, 1, 0, 0);
+                        workoutExerciseDao.insert(workoutExercise);
+                        workoutExercise = new WorkoutExercise(2, "French Pull Ups", 4, "max", 0, 120, 2, 0, 0);
+                        workoutExerciseDao.insert(workoutExercise);
+                        workoutExercise = new WorkoutExercise(2, "Pull Ups", 4, "max", 0, 120, 3, 0, 0);
+                        workoutExerciseDao.insert(workoutExercise);
+
+
+
+                    difficulty = new WorkoutDifficulty(3, 7, "Intermediate", "This workout is designed to increase how many pull up you can do. It was created for people who find the beginner pull up too easy but can't do ten pull ups. " +
+                            "For the sets of pull ups, do as many as you can up to ten. Once you can do three sets of ten pull ups, you can try the advanced workout.");
                     difficultyDao.insert(difficulty);
-                        workoutExercise = new WorkoutExercise(3, "Scapular Pull Ups", 3, "10", 0, 120, 1, 0, 0);
+                        workoutExercise = new WorkoutExercise(3, "Scapular Pull Ups", 3, "12", 0, 120, 1, 0, 0);
+                        workoutExerciseDao.insert(workoutExercise);
+                        workoutExercise = new WorkoutExercise(3, "Pull Ups", 4, "max", 0, 120, 2, 0, 0);
+                        workoutExerciseDao.insert(workoutExercise);
+                        workoutExercise = new WorkoutExercise(3, "Body Weight Rows", 4, "12", 0, 120, 3, 0, 0);
                         workoutExerciseDao.insert(workoutExercise);
                 card = new WorkoutCard(8, "Push", "Endurance", "@drawable/onearmtemp");
                 cardDao.insert(card);
