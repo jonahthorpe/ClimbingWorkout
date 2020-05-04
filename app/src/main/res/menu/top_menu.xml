@@ -4,4 +4,7 @@
     <item
         android:id="@+id/sign_out_login_in"
         android:title="Sign In" />
+    <item
+        android:id="@+id/find_gyms"
+        android:title="Find Gyms Around Me" />
 </menu>

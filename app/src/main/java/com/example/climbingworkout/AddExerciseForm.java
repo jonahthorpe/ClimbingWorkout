@@ -6,6 +6,7 @@ import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -26,6 +27,8 @@ public class AddExerciseForm {
     private EditText restTime;
     private Spinner repType;
     private AddExerciseForm childExercise;
+    private EditText repeaterOn;
+    private EditText repeaterOff;
 
 
 
@@ -99,15 +102,65 @@ public class AddExerciseForm {
                 )
         );
         repAmount.setInputType(InputType.TYPE_NUMBER_FLAG_DECIMAL | InputType.TYPE_CLASS_NUMBER);
+        repAmount.setHint("Amount");
         infoRow.addView(repAmount);
 
+        repeaterOn = new EditText(context);
+        repeaterOn.setLayoutParams( new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT,
+                        LinearLayout.LayoutParams.WRAP_CONTENT,
+                        1.0f
+                )
+        );
+        repeaterOn.setInputType(InputType.TYPE_NUMBER_FLAG_DECIMAL | InputType.TYPE_CLASS_NUMBER);
+        infoRow.addView(repeaterOn);
+        repeaterOn.setHint("Time On");
+        repeaterOn.setVisibility(View.INVISIBLE);
+
+        repeaterOff = new EditText(context);
+        repeaterOff.setLayoutParams( new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT,
+                        LinearLayout.LayoutParams.WRAP_CONTENT,
+                        1.0f
+                )
+        );
+        repeaterOff.setInputType(InputType.TYPE_NUMBER_FLAG_DECIMAL | InputType.TYPE_CLASS_NUMBER);
+        infoRow.addView(repeaterOff);
+        repeaterOff.setHint("Time Off");
+        repeaterOff.setVisibility(View.INVISIBLE);
 
 
         repType = new Spinner(context);
-        String[] items = new String[]{"Reps", "Seconds"};
+        String[] items = new String[]{"Reps", "Seconds", "Repeaters"};
         ArrayAdapter<String> adapter = new ArrayAdapter<>(context, android.R.layout.simple_spinner_dropdown_item, items);
         repType.setAdapter(adapter);
         infoRow.addView(repType);
+
+        repType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                switch (repType.getSelectedItem().toString()){
+                    case "Reps":
+                        repeaterOn.setVisibility(View.INVISIBLE);
+                        repeaterOff.setVisibility(View.INVISIBLE);
+                        break;
+                    case "Seconds":
+                        repeaterOn.setVisibility(View.INVISIBLE);
+                        repeaterOff.setVisibility(View.INVISIBLE);
+                        break;
+                    case "Repeaters":
+                        repeaterOn.setVisibility(View.VISIBLE);
+                        repeaterOff.setVisibility(View.VISIBLE);
+                        break;
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parentView) {
+                // your code here
+            }
+
+        });
 
         if (amount - 1 != 0){
             childExercise = new AddExerciseForm();
@@ -154,6 +207,22 @@ public class AddExerciseForm {
             restTime.setBackgroundResource(R.drawable.normal_edit_text);
         }
 
+        if (repeaterOn.getVisibility() == View.VISIBLE && repeaterOn.getText().toString().length() == 0){
+            repeaterOn.setError("Enter a number");
+            repeaterOn.setBackgroundResource(R.drawable.error_edit_text);
+            valid = false;
+        }else{
+            repeaterOn.setBackgroundResource(R.drawable.normal_edit_text);
+        }
+
+        if (repeaterOff.getVisibility() == View.VISIBLE && repeaterOff.getText().toString().length() == 0){
+            repeaterOff.setError("Enter a number");
+            repeaterOff.setBackgroundResource(R.drawable.error_edit_text);
+            valid = false;
+        }else{
+            repeaterOff.setBackgroundResource(R.drawable.normal_edit_text);
+        }
+
         if (childExercise != null){
             valid = childExercise.checkInputsValid(valid);
         }
@@ -162,14 +231,31 @@ public class AddExerciseForm {
     }
 
     public ArrayList<WorkoutExercise> getExercises(ArrayList<WorkoutExercise> exercises, int position){
-        boolean repTypeBool;
-        repTypeBool = repType.getSelectedItem().toString() != "Reps";
+        int repTypeInt = 0;
+        int repeaterOnValue = 0;
+        int repeaterOffValue = 0;
+        switch (repType.getSelectedItem().toString()){
+            case "Reps":
+                repTypeInt = 0;
+                break;
+            case "Seconds":
+                repTypeInt = 1;
+                break;
+            case "Repeaters":
+                repTypeInt =2;
+                repeaterOnValue = Integer.valueOf(repeaterOn.getText().toString());
+                repeaterOffValue = Integer.valueOf(repeaterOff.getText().toString());
+                break;
+        }
+
         WorkoutExercise exercise = new WorkoutExercise(0, exerciseName.getText().toString(),
                                                        Integer.valueOf(setAmount.getText().toString()),
                                                         repAmount.getText().toString(),
-                                                        repTypeBool,
+                                                        repTypeInt,
                                                         Integer.valueOf(restTime.getText().toString()),
-                                                        position);
+                                                        position,
+                                                        repeaterOnValue,
+                                                        repeaterOffValue);
         exercises.add(exercise);
         if (childExercise != null){
             exercises = childExercise.getExercises(exercises, position + 1);

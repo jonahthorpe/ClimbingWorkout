@@ -22,16 +22,23 @@ public class WorkoutExercise {
     @NonNull
     // 0 is amount, 1 is seconds for example 10 reps of push ups could be 10 push ups or push ups
     // for 10 seconds
+    //2 is for repeater style workout for example 5 seconds 0n 5 seconds of 5 times
     @ColumnInfo(name="repType")
-    private Boolean repType;
+    private int repType;
     @NonNull
     @ColumnInfo(name="rest")
     private int rest;
     @NonNull
     @ColumnInfo(name="position")
     private int position;
+    @NonNull
+    @ColumnInfo(name="repeaterOn")
+    private int repeaterOn;
+    @NonNull
+    @ColumnInfo(name="repeaterOff")
+    private int repeaterOff;
 
-    public WorkoutExercise(int workoutID, String exercise, int sets, String reps, @NonNull Boolean repType, int rest, int position) {
+    public WorkoutExercise(int workoutID, @NonNull String exercise, int sets, @NonNull String reps, int repType, int rest, int position, int repeaterOn, int repeaterOff) {
         this.workoutID = workoutID;
         this.exercise = exercise;
         this.sets = sets;
@@ -39,65 +46,84 @@ public class WorkoutExercise {
         this.repType = repType;
         this.rest = rest;
         this.position = position;
+        this.repeaterOn = repeaterOn;
+        this.repeaterOff = repeaterOff;
     }
 
     public WorkoutExercise() {
-    }
-
-    public int getWorkoutID() {
-        return workoutID;
     }
 
     public void setWorkoutID(int workoutID) {
         this.workoutID = workoutID;
     }
 
-    public String getExercise() {
-        return exercise;
-    }
-
-    public void setExercise(String exercise) {
+    public void setExercise(@NonNull String exercise) {
         this.exercise = exercise;
-    }
-
-    public int getSets() {
-        return sets;
     }
 
     public void setSets(int sets) {
         this.sets = sets;
     }
 
-    public String getReps() {
-        return reps;
-    }
-
-    public void setReps(String reps) {
+    public void setReps(@NonNull String reps) {
         this.reps = reps;
     }
 
-    @NonNull
-    public Boolean getRepType() {
-        return repType;
-    }
-
-    public void setRepType(@NonNull Boolean repType) {
+    public void setRepType(int repType) {
         this.repType = repType;
-    }
-
-    public int getRest() {
-        return rest;
     }
 
     public void setRest(int rest) {
         this.rest = rest;
     }
 
+    public void setPosition(int position) {
+        this.position = position;
+    }
+
+    public void setRepeaterOn(int repeaterOn) {
+        this.repeaterOn = repeaterOn;
+    }
+
+    public void setRepeaterOff(int repeaterOff) {
+        this.repeaterOff = repeaterOff;
+    }
+
+    public int getWorkoutID() {
+        return workoutID;
+    }
+
+    @NonNull
+    public String getExercise() {
+        return exercise;
+    }
+
+    public int getSets() {
+        return sets;
+    }
+
+    @NonNull
+    public String getReps() {
+        return reps;
+    }
+
+    public int getRepType() {
+        return repType;
+    }
+
+    public int getRest() {
+        return rest;
+    }
+
     public int getPosition() {
         return position;
     }
 
-    public void setPosition(int position) {
-        this.position = position;
+    public int getRepeaterOn() {
+        return repeaterOn;
+    }
+
+    public int getRepeaterOff() {
+        return repeaterOff;
     }
 }

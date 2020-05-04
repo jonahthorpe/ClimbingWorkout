@@ -62,7 +62,7 @@ public abstract class WorkoutsDatabase extends RoomDatabase {
                 exerciseDao.insert(exercise);
                 WorkoutExerciseDao workoutExerciseDao = INSTANCE.workoutExerciseDao();
                 workoutExerciseDao.deleteAll();
-                WorkoutExercise workoutExercise = new WorkoutExercise(1, "Scapular Pull Ups", 3, "10", false, 120, 1);
+                WorkoutExercise workoutExercise = new WorkoutExercise(1, "Scapular Pull Ups", 3, "10", 0, 120, 1, 0, 0);
 
                 // strength
                 // pull
@@ -75,7 +75,7 @@ public abstract class WorkoutsDatabase extends RoomDatabase {
                 card = new WorkoutCard(10, "Finger", "Strength", "@drawable/onearmtemp");
                     WorkoutDifficulty difficulty = new WorkoutDifficulty(4, 10, "Beginner", "");
                     difficultyDao.insert(difficulty);
-                        workoutExercise = new WorkoutExercise(4, "Scapular Pull Ups", 3, "10", true, 12, 1);
+                        workoutExercise = new WorkoutExercise(4, "Scapular Pull Ups", 3, "10", 1, 12, 1, 0, 0);
                         workoutExerciseDao.insert(workoutExercise);
                     difficulty = new WorkoutDifficulty(5, 1, "Intermediate", "");
                     difficultyDao.insert(difficulty);
@@ -97,24 +97,34 @@ public abstract class WorkoutsDatabase extends RoomDatabase {
                             "For the sets of pull ups, do as many as you can up to five. If you can't do any, you can skip this set but make sure to at least try one pull up to view progress and see if you can perform a pull up." +
                             "Once you can do three sets of five pull ups, you can try the intermediate workout.");
                     difficultyDao.insert(difficulty);
-                        workoutExercise = new WorkoutExercise(1, "Scapular Pull Ups", 3, "10", false, 10, 1);
+                        workoutExercise = new WorkoutExercise(1, "Scapular Pull Ups", 3, "10", 0, 10, 1, 0, 0);
                         workoutExerciseDao.insert(workoutExercise);
-                        workoutExercise = new WorkoutExercise(1, "Pull Ups", 3, "max", false, 8, 2);
+                        workoutExercise = new WorkoutExercise(1, "Pull Ups", 3, "max", 0, 8, 2, 0, 0);
                         workoutExerciseDao.insert(workoutExercise);
-                        workoutExercise = new WorkoutExercise(1, "Body Weight Rows", 3, "8", false, 1, 3);
+                        workoutExercise = new WorkoutExercise(1, "Body Weight Rows", 3, "8", 0, 1, 3, 0, 0);
                         workoutExerciseDao.insert(workoutExercise);
-                        workoutExercise = new WorkoutExercise(1, "Pull Up Negatives", 3, "8", false, 1, 4);
+                        workoutExercise = new WorkoutExercise(1, "Pull Up Negatives", 3, "8", 0, 1, 4, 0, 0);
                         workoutExerciseDao.insert(workoutExercise);
                     difficulty = new WorkoutDifficulty(2, 7, "Advanced", "");
                     difficultyDao.insert(difficulty);
                     difficulty = new WorkoutDifficulty(3, 7, "Intermediate", "");
                     difficultyDao.insert(difficulty);
-                        workoutExercise = new WorkoutExercise(3, "Scapular Pull Ups", 3, "10", false, 120, 1);
+                        workoutExercise = new WorkoutExercise(3, "Scapular Pull Ups", 3, "10", 0, 120, 1, 0, 0);
                         workoutExerciseDao.insert(workoutExercise);
                 card = new WorkoutCard(8, "Push", "Endurance", "@drawable/onearmtemp");
                 cardDao.insert(card);
                 card = new WorkoutCard(9, "Core", "Endurance", "@drawable/onearmtemp");
                 cardDao.insert(card);
+                card = new WorkoutCard(11, "Fingers", "Endurance", "@drawable/onearmtemp");
+                cardDao.insert(card);
+                    difficulty = new WorkoutDifficulty(7, 11, "Beginner", "");
+                    difficultyDao.insert(difficulty);
+                        workoutExercise = new WorkoutExercise(7, "Scapular Pull Ups", 3, "3", 2, 12, 1, 7, 3);
+                        workoutExerciseDao.insert(workoutExercise);
+                    difficulty = new WorkoutDifficulty(8, 11, "Intermediate", "");
+                    difficultyDao.insert(difficulty);
+                    difficulty = new WorkoutDifficulty(9, 11, "Advanced", "");
+                    difficultyDao.insert(difficulty);
             });
         }
     };

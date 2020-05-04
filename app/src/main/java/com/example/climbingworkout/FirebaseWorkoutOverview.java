@@ -54,8 +54,18 @@ public class FirebaseWorkoutOverview extends AppCompatActivity {
                     String text = "";
                     for (WorkoutExercise exercise : exercises) {
                         text += "\n" + exercise.getExercise() + " " +
-                                exercise.getSets() + " sets x " +
-                                exercise.getReps() + " reps";
+                                exercise.getSets() + " sets x ";
+                        switch(exercise.getRepType()){
+                            case 0:
+                                text += exercise.getReps() + " reps";
+                                break;
+                            case 1:
+                                text += exercise.getReps() + " seconds";
+                                break;
+                            case 2:
+                                text += exercise.getReps() + ", " + exercise.getRepeaterOn() + " seconds on, " + exercise.getRepeaterOff() + " seconds off";
+                                break;
+                        }
 
                     }
 

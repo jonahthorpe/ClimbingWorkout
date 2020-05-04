@@ -55,6 +55,8 @@ public class Workout extends AppCompatActivity {
     private TextView timer_label;
     private Boolean isMyWokout;
     private  WorkoutExercise exercise;
+    private int repNumber = 1 ;
+    private boolean isRepeaterOn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,6 +106,7 @@ public class Workout extends AppCompatActivity {
             }
 
             public void onFinish() {
+                repNumber = 1;
                 playButton.setBackgroundResource(android.R.drawable.ic_media_play);
                 playing = false;
                 set += 1;
@@ -144,6 +147,64 @@ public class Workout extends AppCompatActivity {
         }.start();
     }
 
+    private void startTimerRepeaterOn(int repeaterOn, int repeaterOff, int maxReps, int restTime){
+        timer_label.setText("On");
+        reps.setText("Reps: " + repNumber + "/" + maxReps);
+        isRepeaterOn = true;
+        endTime = System.currentTimeMillis() + timeLeft;
+        timer = new CountDownTimer(timeLeft, 1000) {
+            public void onTick(long millisUntilFinished) {
+                timeLeft = millisUntilFinished;
+                long secondsRemaining = timeLeft / 1000;
+                double minutes = secondsRemaining / 60;
+                double seconds = secondsRemaining % 60;
+                counter.setText( (int) minutes + ":" + String.format("%02d", (int) seconds));
+            }
+
+            public void onFinish() {
+                if (repNumber == maxReps){
+                    resting = true;
+                    timer_label.setText("Rest");
+                    timeLeft = restTime * 1000;
+                    startTimerRest();
+                }else {
+                    repNumber += 1;
+                    counter.setText("0:00");
+                    timer_label.setText("Rest");
+                    timeLeft = repeaterOff * 1000;
+                    startTimerRepeaterOff(repeaterOn, repeaterOff, maxReps, restTime);
+                }
+
+            }
+
+        }.start();
+    }
+
+    private void startTimerRepeaterOff(int repeaterOn, int repeaterOff, int maxReps, int restTime){
+        timer_label.setText("Off");
+        isRepeaterOn = false;
+        endTime = System.currentTimeMillis() + timeLeft;
+        timer = new CountDownTimer(timeLeft, 1000) {
+            public void onTick(long millisUntilFinished) {
+                timeLeft = millisUntilFinished;
+                long secondsRemaining = timeLeft / 1000;
+                double minutes = secondsRemaining / 60;
+                double seconds = secondsRemaining % 60;
+                counter.setText( (int) minutes + ":" + String.format("%02d", (int) seconds));
+            }
+
+            public void onFinish() {
+                counter.setText("0:00");
+                timer_label.setText("Exercise");
+                timeLeft = repeaterOn * 1000;
+                startTimerRepeaterOn(repeaterOn, repeaterOff, maxReps, restTime);
+
+            }
+
+        }.start();
+
+    }
+
     private void pauseTimer(){
         timer.cancel();
     }
@@ -158,6 +219,12 @@ public class Workout extends AppCompatActivity {
         outState.putInt("currentSet", set);
         outState.putBoolean("resting", resting);
         outState.putInt("rest", exercise.getRest());
+        outState.putInt("repNumber", repNumber);
+        outState.putBoolean("isRepeaterOn", isRepeaterOn);
+        outState.putInt("repType", exercise.getRepType());
+        outState.putInt("reps", Integer.valueOf(exercise.getReps()));
+        outState.putInt("repeaterOn", exercise.getRepeaterOn());
+        outState.putInt("repeaterOff", exercise.getRepeaterOff());
     }
 
     @Override
@@ -170,6 +237,12 @@ public class Workout extends AppCompatActivity {
         set = savedInstanceState.getInt("currentSet");
         resting = savedInstanceState.getBoolean("resting");
         int rest = savedInstanceState.getInt("rest");
+        repNumber = savedInstanceState.getInt("repNumber");
+        isRepeaterOn = savedInstanceState.getBoolean("isRepeaterOn");
+        int reps = savedInstanceState.getInt("reps");
+        int repeaterOn = savedInstanceState.getInt("repeaterOn");
+        int repeaterOff = savedInstanceState.getInt("repeaterOff");
+        int repType = savedInstanceState.getInt("repType");
 
         test = "a";
         if (playing) {
@@ -177,20 +250,24 @@ public class Workout extends AppCompatActivity {
             timeLeft = endTime - System.currentTimeMillis() ;
             if (resting) {
                 startTimerRest();
-            }else{
+            }else if (repType == 1){
                 startTimerExercise(rest);
+            }else{
+                if (isRepeaterOn) {
+                    startTimerRepeaterOn(repeaterOn, repeaterOff, reps, rest);
+                }else if(repNumber == reps ){
+                    startTimerRest();
+                }else{
+                    startTimerRepeaterOff(repeaterOn, repeaterOff, reps, rest);
+                }
             }
             playButton.setBackgroundResource(android.R.drawable.ic_media_pause);
         }
     }
 
-    protected LifecycleOwner getLifecycleOwner(){
-        return this;
-    }
 
     protected void testfunc(List<WorkoutExercise> exercises){
         exercise = exercises.get(currentExercise);
-        Log.i("exercise", exercise.getExercise());
         if (set > exercise.getSets()){
             currentExercise += 1;
             if (currentExercise >= exercises.size()){
@@ -234,10 +311,12 @@ public class Workout extends AppCompatActivity {
 
 
         exerciseTitle.setText(exercise.getExercise());
-        if (exercise.getRepType()) {
+        if (exercise.getRepType() == 1) {
             reps.setText("Time: " + exercise.getReps() + " seconds");
-        }else {
+        }else if (exercise.getRepType() == 0){
             reps.setText("Reps: " + exercise.getReps());
+        }else{
+            reps.setText("Reps: " + repNumber + "/" + exercise.getReps());
         }
         sets.setText("Sets: "+ set +"/" + exercise.getSets());
 
@@ -255,11 +334,14 @@ public class Workout extends AppCompatActivity {
         if(test == null){
             long time;
             // rep type return true if time
-            if (exercise.getRepType()){
+            if (exercise.getRepType() == 1){
                 resting = false;
                 time = Long.parseLong(exercise.getReps());
-            }else {
+            }else if (exercise.getRepType() == 0){
                 time = exercise.getRest();
+            }else {
+                resting = false;
+                time = exercise.getRepeaterOn();
             }
             double minutes = time / 60;
             double seconds = time % 60;
@@ -274,8 +356,10 @@ public class Workout extends AppCompatActivity {
 
         if (resting){
             timer_label.setText("Rest");
+        }else if (exercise.getRepType() == 2){
+            timer_label.setText("On");
         }else{
-            timer_label.setText("Exercise Time");
+            timer_label.setText("Exercise");
         }
 
         int restTime = exercise.getRest();
@@ -290,7 +374,7 @@ public class Workout extends AppCompatActivity {
                 if (resting) {
                     startTimerRest();
                 }else{
-                    startTimerExercise(restTime);
+                    startTimerRepeaterOn(exercise.getRepeaterOn(), exercise.getRepeaterOff(), Integer.valueOf(exercise.getReps()), exercise.getRest());
                 }
             }
         });
@@ -306,7 +390,6 @@ public class Workout extends AppCompatActivity {
             // Write a message to the database
             FirebaseDatabase database = FirebaseDatabase.getInstance();
             DatabaseReference myRef = database.getReference("users/" + user.getUid() + "/my_workouts/" + intent.getStringExtra("workout"));
-            Log.i("exrecise", isMyWokout + "");
             // Read from the database
             myRef.addValueEventListener(new ValueEventListener() {
                 @Override
@@ -337,6 +420,7 @@ public class Workout extends AppCompatActivity {
     protected void setNavigationButtonOnClicks(WorkoutExercise exercise, List<WorkoutExercise> exercises){
         previousExercise.setOnClickListener(v->{
             if (currentExercise >= 1){
+                repNumber = 1;
                 currentExercise -= 1;
                 set = 1;
                 test = null;
@@ -349,6 +433,7 @@ public class Workout extends AppCompatActivity {
         });
         nextExercise.setOnClickListener(v->{
             if (currentExercise < (exercises.size()-1)){
+                repNumber = 1;
                 currentExercise += 1;
                 set = 1;
                 test = null;
@@ -361,6 +446,7 @@ public class Workout extends AppCompatActivity {
         });
         previousSet.setOnClickListener(v->{
             if (set > 1){
+                repNumber = 1;
                 set -= 1;
                 test = null;
                 if (timer != null){
@@ -372,6 +458,7 @@ public class Workout extends AppCompatActivity {
         });
         nextSet.setOnClickListener(v->{
             if (set < exercise.getSets()){
+                repNumber = 1;
                 set +=1;
                 test = null;
                 if (timer != null){
