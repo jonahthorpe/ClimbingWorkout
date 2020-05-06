@@ -7,7 +7,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -31,6 +34,8 @@ import java.util.List;
 
 public class MyWorkoutsFragment extends Fragment {
     private View view;
+    private RelativeLayout myWorkoutsContainer;
+    private LinearLayout loggedInMessageContainer;
 
     @Nullable
     @Override
@@ -45,7 +50,14 @@ public class MyWorkoutsFragment extends Fragment {
             }
         });
 
-
+        myWorkoutsContainer = view.findViewById(R.id.my_workouts_contaier);
+        loggedInMessageContainer = view.findViewById(R.id.logged_in_message_container);
+        Button goToLogInPage = view.findViewById(R.id.go_to_log_in);
+        goToLogInPage.setOnClickListener(view ->{
+            Intent intent = new Intent(getContext(), LogIn.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+            startActivity(intent);
+        });
 
         return view;
     }
@@ -55,75 +67,86 @@ public class MyWorkoutsFragment extends Fragment {
         super.onResume();
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        // Write a message to the database
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference("users/" + user.getUid() + "/my_workouts");
+        if (user != null) {
+            myWorkoutsContainer.setVisibility(View.VISIBLE);
+            loggedInMessageContainer.setVisibility(View.INVISIBLE);
+            // Write a message to the database
+            FirebaseDatabase database = FirebaseDatabase.getInstance();
+            DatabaseReference myRef = database.getReference("users/" + user.getUid() + "/my_workouts");
 
-        // Read from the database
-        myRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                TextView emptyStateMessage = view.findViewById(R.id.empty_state_message);
-                if (dataSnapshot.exists()) {
-
-
-                    // This method is called once with the initial value and again
-                    // whenever data at this location is updated.
+            // Read from the database
+            myRef.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    RelativeLayout container = view.findViewById(R.id.list_container);
+                    TextView emptyStateMessage = view.findViewById(R.id.empty_state_message);
                     RecyclerView myWorkoutsList = view.findViewById(R.id.my_workouts_list);
-                    ArrayList<String> workoutNames = new ArrayList<>();
-                    ArrayList<String> firstExercises = new ArrayList<>();
-                    ArrayList<String> secondExercises = new ArrayList<>();
-                    ArrayList<String> thirdExercises = new ArrayList<>();
-                    ArrayList<String> keys = new ArrayList<>();
-                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                        //Log.i("qwerty", snapshot.getKey());
-                        FirebaseWorkout workout = snapshot.getValue(FirebaseWorkout.class);
-                        workoutNames.add(workout.getWorkout_name());
-                        List<WorkoutExercise> exercises = workout.getExercises();
-                        if (exercises.size() > 3) {
-                            firstExercises.add(exercises.get(0).getExercise());
-                            secondExercises.add(exercises.get(1).getExercise());
-                            thirdExercises.add(exercises.get(2).getExercise() + "...");
-                        } else if (exercises.size() == 3) {
-                            firstExercises.add(exercises.get(0).getExercise());
-                            secondExercises.add(exercises.get(1).getExercise());
-                            thirdExercises.add(exercises.get(2).getExercise());
-                        } else if (exercises.size() == 2) {
-                            firstExercises.add(exercises.get(0).getExercise());
-                            secondExercises.add(exercises.get(1).getExercise());
-                            thirdExercises.add("");
-                        } else {
-                            firstExercises.add(exercises.get(0).getExercise());
-                            secondExercises.add("");
-                            thirdExercises.add("");
+                    if (dataSnapshot.exists()) {
+
+                        // This method is called once with the initial value and again
+                        // whenever data at this location is updated.
+                        ArrayList<String> workoutNames = new ArrayList<>();
+                        ArrayList<String> firstExercises = new ArrayList<>();
+                        ArrayList<String> secondExercises = new ArrayList<>();
+                        ArrayList<String> thirdExercises = new ArrayList<>();
+                        ArrayList<String> keys = new ArrayList<>();
+                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                            //Log.i("qwerty", snapshot.getKey());
+                            FirebaseWorkout workout = snapshot.getValue(FirebaseWorkout.class);
+                            workoutNames.add(workout.getWorkout_name());
+                            List<WorkoutExercise> exercises = workout.getExercises();
+                            if (exercises.size() > 3) {
+                                firstExercises.add(exercises.get(0).getExercise());
+                                secondExercises.add(exercises.get(1).getExercise());
+                                thirdExercises.add(exercises.get(2).getExercise() + "...");
+                            } else if (exercises.size() == 3) {
+                                firstExercises.add(exercises.get(0).getExercise());
+                                secondExercises.add(exercises.get(1).getExercise());
+                                thirdExercises.add(exercises.get(2).getExercise());
+                            } else if (exercises.size() == 2) {
+                                firstExercises.add(exercises.get(0).getExercise());
+                                secondExercises.add(exercises.get(1).getExercise());
+                                thirdExercises.add("");
+                            } else {
+                                firstExercises.add(exercises.get(0).getExercise());
+                                secondExercises.add("");
+                                thirdExercises.add("");
+                            }
+                            keys.add(snapshot.getKey());
+
+
                         }
-                        keys.add(snapshot.getKey());
 
+                        if (workoutNames.isEmpty()) {
+                            myWorkoutsList.setVisibility(view.INVISIBLE);
+                            emptyStateMessage.setText("No workouts found.\nTry clicking the add button to create your first workout!");
+                        } else {
+                            myWorkoutsList.setVisibility(view.VISIBLE);
+                            emptyStateMessage.setText("");
+                        }
 
+                        //ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(),R.layout.list_item,R.id.list_textview,workoutNames);
 
-                    }
-
-                    if (workoutNames.isEmpty()){
+                        //myWorkoutsList.setAdapter(adapter);
+                        WorkoutListAdapter adapter = new WorkoutListAdapter(getContext(), workoutNames, firstExercises, secondExercises, thirdExercises, keys);
+                        myWorkoutsList.setAdapter(adapter);
+                        myWorkoutsList.setLayoutManager(new LinearLayoutManager(getContext()));
+                    } else {
+                        myWorkoutsList.setVisibility(view.INVISIBLE);
                         emptyStateMessage.setText("No workouts found.\nTry clicking the add button to create your first workout!");
-                    }else{
-                        emptyStateMessage.setText("");
                     }
-
-                    //ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(),R.layout.list_item,R.id.list_textview,workoutNames);
-
-                    //myWorkoutsList.setAdapter(adapter);
-                    WorkoutListAdapter adapter = new WorkoutListAdapter(getContext(), workoutNames, firstExercises, secondExercises, thirdExercises, keys);
-                    myWorkoutsList.setAdapter(adapter);
-                    myWorkoutsList.setLayoutManager(new LinearLayoutManager(getContext()));
                 }
-            }
 
-            @Override
-            public void onCancelled(DatabaseError error) {
-                // Failed to read value
+                @Override
+                public void onCancelled(DatabaseError error) {
+                    // Failed to read value
 
-            }
-        });
+                }
+            });
+        }else{
+            myWorkoutsContainer.setVisibility(View.INVISIBLE);
+            loggedInMessageContainer.setVisibility(View.VISIBLE);
+        }
     }
 
 }

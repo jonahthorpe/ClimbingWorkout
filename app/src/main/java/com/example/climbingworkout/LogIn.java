@@ -166,6 +166,8 @@ public class LogIn extends AppCompatActivity {
                                 // Sign in success, update UI with the signed-in user's information
                                 FirebaseUser user = mAuth.getCurrentUser();
                                 changeActivity();
+                                emailInputField.setText("");
+                                passwordInputField.setText("");
                             } else {
                                 // If sign in fails, display a message to the user.
                                 Toast.makeText(getApplicationContext(), "Authentication failed.",
@@ -264,6 +266,9 @@ public class LogIn extends AppCompatActivity {
 
                                 myRef.child(user.getUid()).setValue(new User("empty", "empty"));
                                 changeActivity();
+                                signUpEmail.setText("");
+                                signUpPassword.setText("");
+                                signUpPasswordConfirm.setText("");
                             } else {
                                 // If sign in fails, display a message to the user.
                                 switch (task.getException().toString()){

@@ -8,30 +8,67 @@
     android:orientation="vertical">
 
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/my_workouts_list"
+    <RelativeLayout
+        android:id="@+id/my_workouts_contaier"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+        android:layout_height="match_parent">
 
-    </androidx.recyclerview.widget.RecyclerView>
+        <RelativeLayout
+            android:id="@+id/list_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/empty_state_message"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="false"
-        android:layout_alignParentEnd="false" />
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/my_workouts_list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginEnd="10dp"
-        android:layout_marginBottom="10dp"
-        android:clickable="true"
-        android:src="@drawable/add"
-        app:elevation="0dp" />
+            </androidx.recyclerview.widget.RecyclerView>
+
+            <TextView
+                android:id="@+id/empty_state_message"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </RelativeLayout>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp"
+            android:backgroundTint="@color/colorPrimary"
+            android:clickable="true"
+            android:src="@drawable/add"
+            app:elevation="0dp" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/logged_in_message_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingTop="10dp">
+
+        <TextView
+            android:id="@+id/logged_in_message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="You are not currently logged in.\nClick the button below to log in." />
+
+        <Button
+            android:id="@+id/go_to_log_in"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="#128B7D"
+            android:padding="10dp"
+            android:text="Go To Log in Page"
+            android:textColor="#ffffff" />
+    </LinearLayout>
 
 </RelativeLayout>

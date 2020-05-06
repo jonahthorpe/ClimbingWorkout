@@ -1,6 +1,7 @@
 package com.example.climbingworkout;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -10,8 +11,10 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -58,6 +61,8 @@ public class WorkoutHistoryFragment extends Fragment {
     private WorkoutHistoryViewModel mHistoryViewModel;
     private Context mContext;
     private LifecycleOwner mLifeCycleOwner;
+    private LinearLayout calendarContainer;
+    private LinearLayout loggedInMessageContainer;
 
     @Nullable
     @Override
@@ -82,29 +87,58 @@ public class WorkoutHistoryFragment extends Fragment {
         loggedCalendar = Calendar.getInstance();
         currentCalendar = Calendar.getInstance();
 
+        calendarContainer = view.findViewById(R.id.container);
+        loggedInMessageContainer = view.findViewById(R.id.logged_in_message_container);
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            calendarContainer.setVisibility(View.VISIBLE);
+            loggedInMessageContainer.setVisibility(View.INVISIBLE);
+            createCalendar(month);
 
-        createCalendar(month);
+            previousMonth = view.findViewById(R.id.prevMonth);
+            previousMonth.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    month -= 1;
+                    createCalendar(month);
+                }
+            });
 
-        previousMonth = view.findViewById(R.id.prevMonth);
-        previousMonth.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view){
-                month -= 1;
-                createCalendar( month);
-            }
-        });
+            nextMonth = view.findViewById(R.id.nextMonth);
+            nextMonth.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    month += 1;
+                    createCalendar(month);
+                }
+            });
+        }else{
+            calendarContainer.setVisibility(View.INVISIBLE);
+            loggedInMessageContainer.setVisibility(View.VISIBLE);
+        }
 
-        nextMonth = view.findViewById(R.id.nextMonth);
-        nextMonth.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view){
-                month += 1;
-                createCalendar( month);
-            }
+        Button goToLogInPage = view.findViewById(R.id.go_to_log_in);
+        goToLogInPage.setOnClickListener(view ->{
+            Intent intent = new Intent(getContext(), LogIn.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+            startActivity(intent);
         });
 
 
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            calendarContainer.setVisibility(View.VISIBLE);
+            loggedInMessageContainer.setVisibility(View.INVISIBLE);
+        }else{
+            calendarContainer.setVisibility(View.INVISIBLE);
+            loggedInMessageContainer.setVisibility(View.VISIBLE);
+        }
     }
 
     public int getMonth() {

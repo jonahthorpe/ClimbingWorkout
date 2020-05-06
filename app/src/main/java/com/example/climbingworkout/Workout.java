@@ -124,6 +124,7 @@ public class Workout extends AppCompatActivity {
 
     private void startTimerExercise(int restTime) {
         endTime = System.currentTimeMillis() + timeLeft;
+        timer_label.setText("Exercise");
         timer = new CountDownTimer(timeLeft, 1000) {
             public void onTick(long millisUntilFinished) {
                 timeLeft = millisUntilFinished;
@@ -375,8 +376,10 @@ public class Workout extends AppCompatActivity {
                 playing = true;
                 if (resting) {
                     startTimerRest();
-                }else{
+                }else if (exercise.getRepType() == 2){
                     startTimerRepeaterOn(exercise.getRepeaterOn(), exercise.getRepeaterOff(), Integer.valueOf(exercise.getReps()), exercise.getRest());
+                }else{
+                    startTimerExercise(exercise.getRest());
                 }
             }
         });

@@ -60,7 +60,7 @@ public abstract class WorkoutsDatabase extends RoomDatabase {
                 exerciseDao.insert(exercise);
                 exercise = new Exercise("Pull Up Negatives", "negative_pull_up_no_sound");
                 exerciseDao.insert(exercise);
-                exercise = new Exercise("French Pull Ups", "frenchies_up_no_sound");
+                exercise = new Exercise("French Pull Ups", "frenchies_no_sound");
                 exerciseDao.insert(exercise);
                 WorkoutExerciseDao workoutExerciseDao = INSTANCE.workoutExerciseDao();
                 workoutExerciseDao.deleteAll();
