@@ -2,6 +2,7 @@ package com.example.climbingworkout;
 
 import android.content.Intent;
 import android.content.res.Resources;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.media.Image;
 import android.os.Bundle;
@@ -10,6 +11,7 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -70,7 +72,27 @@ public class WorkoutsFragment extends Fragment {
 
                 TextView textView = new TextView(getContext());
                 textView.setText( card.getWorkoutTitle());
-                textView.setTextAppearance(getContext(), android.R.style.TextAppearance_DeviceDefault_Medium);
+                textView.setBackground(r.getDrawable(R.drawable.card_title));
+                CardView.LayoutParams params = new CardView.LayoutParams(
+                        CardView.LayoutParams.WRAP_CONTENT,
+                        CardView.LayoutParams.WRAP_CONTENT
+                );
+                params.setMargins(
+                        Utility.dpToPx(5f, getResources()),
+                        Utility.dpToPx(5f, getResources()),
+                        Utility.dpToPx(0f, getResources()),
+                        Utility.dpToPx(0f, getResources())
+                );
+                textView.setLayoutParams(params);
+                textView.setTextSize(18);
+                //textView.setTextAppearance(getContext(), android.R.style.TextAppearance_DeviceDefault_Medium);
+                textView.setTextColor(Color.parseColor("#FFFFFF"));
+                textView.setPadding(
+                        Utility.dpToPx(10f, getResources()),
+                        Utility.dpToPx(5f, getResources()),
+                        Utility.dpToPx(10f, getResources()),
+                        Utility.dpToPx(5f, getResources())
+                );
                 ImageView image = new ImageView(getContext());
                 String uri = card.getImageName();
                 int imageResource = getResources().getIdentifier(uri, null, "com.example.climbingworkout");

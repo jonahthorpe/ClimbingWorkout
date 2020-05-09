@@ -1,5 +1,6 @@
 package com.example.climbingworkout;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -14,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -63,6 +65,7 @@ public class WorkoutHistoryFragment extends Fragment {
     private LifecycleOwner mLifeCycleOwner;
     private LinearLayout calendarContainer;
     private LinearLayout loggedInMessageContainer;
+    private ProgressBar progressBar;
 
     @Nullable
     @Override
@@ -73,6 +76,8 @@ public class WorkoutHistoryFragment extends Fragment {
         mHistoryViewModel = new ViewModelProvider(this).get(WorkoutHistoryViewModel.class);
         mContext = getContext();
         mLifeCycleOwner = getViewLifecycleOwner();
+
+        progressBar = view.findViewById(R.id.progressBar);
 
         monday = view.findViewById(R.id.mondayColumn);
         tuesday = view.findViewById(R.id.tuesdayColumn);
@@ -88,6 +93,7 @@ public class WorkoutHistoryFragment extends Fragment {
         currentCalendar = Calendar.getInstance();
 
         calendarContainer = view.findViewById(R.id.container);
+        calendarContainer.setVisibility(View.INVISIBLE);
         loggedInMessageContainer = view.findViewById(R.id.logged_in_message_container);
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
@@ -113,6 +119,7 @@ public class WorkoutHistoryFragment extends Fragment {
                 }
             });
         }else{
+            progressBar.setVisibility(View.GONE);
             calendarContainer.setVisibility(View.INVISIBLE);
             loggedInMessageContainer.setVisibility(View.VISIBLE);
         }
@@ -121,7 +128,9 @@ public class WorkoutHistoryFragment extends Fragment {
         goToLogInPage.setOnClickListener(view ->{
             Intent intent = new Intent(getContext(), LogIn.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+            Activity activity = getActivity();
             startActivity(intent);
+            activity.finish();
         });
 
 
@@ -136,6 +145,7 @@ public class WorkoutHistoryFragment extends Fragment {
             calendarContainer.setVisibility(View.VISIBLE);
             loggedInMessageContainer.setVisibility(View.INVISIBLE);
         }else{
+            progressBar.setVisibility(View.GONE);
             calendarContainer.setVisibility(View.INVISIBLE);
             loggedInMessageContainer.setVisibility(View.VISIBLE);
         }
@@ -291,6 +301,8 @@ public class WorkoutHistoryFragment extends Fragment {
             myRef.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
+                    progressBar.setVisibility(View.GONE);
+                    calendarContainer.setVisibility(View.VISIBLE);
                     if (dataSnapshot.exists()) {
                         int maxDate = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
                         for (int i = 1; i<=maxDate; i++ ){

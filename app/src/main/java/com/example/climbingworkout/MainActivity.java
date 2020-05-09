@@ -36,11 +36,23 @@ public class MainActivity extends AppCompatActivity {
 
         BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
         bottomNav.setOnNavigationItemSelectedListener(navListener);
+        Intent intent = getIntent();
+        currentScreen = intent.getIntExtra("currentScreen", 0);
 
-        currentScreen = 0;
+        switch (currentScreen){
+            case 0:
+                selectedFragment = workoutsPage;
+                break;
+            case 1:
+                selectedFragment = workoutHistoryPage;
+                break;
+            case 2:
+                selectedFragment = myWorkoutFragment;
+                break;
+        }
 
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                    workoutsPage).commit();
+                    selectedFragment).commit();
 
 
 
@@ -49,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        Intent intent;
         // Handle item selection
         switch (item.getItemId()) {
             case R.id.sign_out_login_in:
@@ -56,13 +69,20 @@ public class MainActivity extends AppCompatActivity {
                 if (user != null) {
                     FirebaseAuth.getInstance().signOut();
                 }
-                Intent intent = new Intent(this, LogIn.class);
+                intent = new Intent(this, LogIn.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                 startActivity(intent);
+                finish();
                 return true;
             case R.id.find_gyms:
                 Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.google.com/search?q=climbing+gyms+around+me"));
                 startActivity(browserIntent);
+                return true;
+            case R.id.user_guide_menu_item:
+                intent = new Intent(this, UserGuide.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                startActivity(intent);
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }

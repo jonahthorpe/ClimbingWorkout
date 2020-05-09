@@ -7,4 +7,7 @@
     <item
         android:id="@+id/find_gyms"
         android:title="Find Gyms Around Me" />
+    <item
+        android:id="@+id/user_guide_menu_item"
+        android:title="User Guide" />
 </menu>

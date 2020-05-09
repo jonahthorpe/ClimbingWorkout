@@ -22,4 +22,6 @@ public class WorkoutOverviewViewModel extends AndroidViewModel {
 
     LiveData<List<WorkoutExercise>> getExercises(int id){return mRepository.getExercises(id);}
 
+    LiveData<WorkoutCard> getCard(int id){return mRepository.getCard(id);}
+
 }

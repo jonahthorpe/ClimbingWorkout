@@ -133,21 +133,11 @@ public class LogIn extends AppCompatActivity {
 
         // set up firebase database
         // save a local version of the database
-        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+        //FirebaseDatabase.getInstance().setPersistenceEnabled(true);
 
     }
 
 
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        // Check if user is signed in (non-null) and update UI accordingly.
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        if (currentUser != null) {
-            changeActivity();
-        }
-    }
 
 
 
@@ -172,6 +162,19 @@ public class LogIn extends AppCompatActivity {
                                 // If sign in fails, display a message to the user.
                                 Toast.makeText(getApplicationContext(), "Authentication failed.",
                                         Toast.LENGTH_SHORT).show();
+                                // If sign in fails, display a message to the user.
+                                Log.i("exceptionHunt", task.getException().toString());
+                                switch (task.getException().toString()){
+                                    case "com.google.firebase.auth.FirebaseAuthInvalidUserException: There is no user record corresponding to this identifier. The user may have been deleted.":
+                                        emailInputField.setError("User not found!");
+                                        emailInputField.setBackgroundResource(R.drawable.error_edit_text);
+                                        break;
+                                    case "com.google.firebase.auth.FirebaseAuthInvalidCredentialsException: The password is invalid or the user does not have a password.":
+                                        passwordInputField.setError("Invalid password!");
+                                        passwordInputField.setBackgroundResource(R.drawable.error_edit_text);
+                                        break;
+
+                                }
                             }
                         }
                     });

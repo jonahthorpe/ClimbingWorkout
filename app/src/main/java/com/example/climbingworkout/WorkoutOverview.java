@@ -1,13 +1,16 @@
 package com.example.climbingworkout;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.app.AlarmManager;
+import android.app.DatePickerDialog;
+import android.app.PendingIntent;
+import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -20,11 +23,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.Calendar;
-import java.util.List;
 
 public class WorkoutOverview extends AppCompatActivity {
 
-    private int currentSelection = 0;
+    private int currentSelection;
     private WorkoutOverviewViewModel mOverviewViewModel;
     private String beginnerText;
     private String intermediateText;
@@ -34,6 +36,10 @@ public class WorkoutOverview extends AppCompatActivity {
     private int beginnerWorkoutId;
     private int intermediateWorkoutId;
     private int advancedWorkoutId;
+    private Calendar calendar;
+    private Calendar date;
+    private DatePickerDialog.OnDateSetListener mDateSetListener;
+    private TimePickerDialog.OnTimeSetListener mTimeSetListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,53 +48,90 @@ public class WorkoutOverview extends AppCompatActivity {
 
 
         Intent intentP = getIntent();
+        currentSelection = intentP.getIntExtra("difficultySelection", 0);
         intent  = new Intent(this, Workout.class);
 
-        TextView workoutDescription = findViewById(R.id.workout_description);
-        beginnerText = "Beginner\n";
-        intermediateText = "Intermediate\n";
-        advancedText = "Advanced\n";
-
+        Button beginnerButton = findViewById(R.id.beginner_button);
+        Button intermediateButton = findViewById(R.id.intermediate_button);
+        Button advancedButton = findViewById(R.id.advanced_button);
+        Button startButton = findViewById(R.id.start);
+        Button logButton = findViewById(R.id.logWorkout);
+        TextView beginnerDescription = findViewById(R.id.beginner_workout_description);
+        TextView intermediateDescription = findViewById(R.id.intermediate_workout_description);
+        TextView advancedDescription = findViewById(R.id.advanced_workout_description);
+        switch(currentSelection){
+            case 0:
+                beginnerButton.setBackgroundColor(getResources().getColor(R.color.topGreen));
+                beginnerDescription.setVisibility(View.VISIBLE);
+                intermediateDescription.setVisibility(View.INVISIBLE);
+                advancedDescription.setVisibility(View.INVISIBLE);
+                break;
+            case 1:
+                intermediateButton.setBackgroundColor(getResources().getColor(R.color.topGreen));
+                beginnerDescription.setVisibility(View.INVISIBLE);
+                intermediateDescription.setVisibility(View.VISIBLE);
+                advancedDescription.setVisibility(View.VISIBLE);
+                break;
+            case 2:
+                advancedButton.setBackgroundColor(getResources().getColor(R.color.topGreen));
+                beginnerDescription.setVisibility(View.INVISIBLE);
+                intermediateDescription.setVisibility(View.INVISIBLE);
+                advancedDescription.setVisibility(View.VISIBLE);
+                break;
+        }
         mOverviewViewModel = new ViewModelProvider(this).get(WorkoutOverviewViewModel.class);
         mOverviewViewModel.getWorkouts(intentP.getIntExtra("cardID", 1)).observe(this, workoutDifficulties ->{
-                for (WorkoutDifficulty workoutDifficulty : workoutDifficulties){
-                    mOverviewViewModel.getExercises(workoutDifficulty.getWorkoutID()).observe(this, exercises -> {
+            beginnerDescription.setText("Beginner\n");
+            intermediateDescription.setText("Intermediate\n");
+            advancedDescription.setText("Advanced\n");
+            for (WorkoutDifficulty workoutDifficulty : workoutDifficulties){
+                mOverviewViewModel.getExercises(workoutDifficulty.getWorkoutID()).observe(this, exercises -> {
+                    for (WorkoutExercise exercise : exercises) {
                         text = "";
-                        for (WorkoutExercise exercise : exercises) {
-                            Log.i("difficulty", String.valueOf(exercise.getExercise()) + exercise.getPosition());
-                            text += "\n" + exercise.getExercise() + " " +
-                                    exercise.getSets() + " sets x " ;
-                            switch(exercise.getRepType()){
-                                case 0:
-                                    text += exercise.getReps() + " reps";
-                                    break;
-                                case 1:
-                                    text += exercise.getReps() + " seconds";
-                                    break;
-                                case 2:
-                                    text += exercise.getReps() + ", " + exercise.getRepeaterOn() + " seconds on, " + exercise.getRepeaterOff() + " seconds off";
-                                    break;
-                            }
-
+                        text += "\n" + exercise.getExercise() + " " +
+                                exercise.getSets() + " sets x " ;
+                        switch(exercise.getRepType()){
+                            case 0:
+                                text += exercise.getReps() + " reps";
+                                break;
+                            case 1:
+                                text += exercise.getReps() + " seconds";
+                                break;
+                            case 2:
+                                text += exercise.getReps() + ", " + exercise.getRepeaterOn() + " seconds on, " + exercise.getRepeaterOff() + " seconds off";
+                                break;
                         }
-                        text += "\n\n" + workoutDifficulty.getDescription();
+
                         switch (workoutDifficulty.getDifficulty()) {
                             case "Beginner":
-                                beginnerText += text;
-                                beginnerWorkoutId = workoutDifficulty.getWorkoutID();
+                                beginnerDescription.append(text);
                                 break;
                             case "Intermediate":
-                                intermediateText += text;
-                                intermediateWorkoutId = workoutDifficulty.getWorkoutID();
+                                intermediateDescription.append(text);
                                 break;
                             case "Advanced":
-                                advancedText += text;
-                                advancedWorkoutId = workoutDifficulty.getWorkoutID();
+                                advancedDescription.append(text);
                                 break;
                         }
-                        workoutDescription.setText(beginnerText);
-                    });
+
+                    }
+                });
+
+                switch (workoutDifficulty.getDifficulty()) {
+                    case "Beginner":
+                        beginnerDescription.append("\n" + workoutDifficulty.getDescription() +  "\n" );
+                        beginnerWorkoutId = workoutDifficulty.getWorkoutID();
+                        break;
+                    case "Intermediate":
+                        intermediateDescription.append("\n" + workoutDifficulty.getDescription() + "\n" );
+                        intermediateWorkoutId = workoutDifficulty.getWorkoutID();
+                        break;
+                    case "Advanced":
+                        advancedDescription.append("\n" + workoutDifficulty.getDescription() + "\n" );
+                        advancedWorkoutId = workoutDifficulty.getWorkoutID();
+                        break;
                 }
+            }
         });
 
         String imagePath = intentP.getStringExtra("imageName");
@@ -97,11 +140,6 @@ public class WorkoutOverview extends AppCompatActivity {
         Drawable res = getResources().getDrawable(imageResource);
         image.setImageDrawable(res);
 
-        Button beginnerButton = findViewById(R.id.beginner_button);
-        Button intermediateButton = findViewById(R.id.intermediate_button);
-        Button advancedButton = findViewById(R.id.advanced_button);
-        Button startButton = findViewById(R.id.start);
-        Button logButton = findViewById(R.id.logWorkout);
 
         beginnerButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -111,7 +149,11 @@ public class WorkoutOverview extends AppCompatActivity {
                     beginnerButton.setBackgroundColor(getResources().getColor(R.color.topGreen));
                     intermediateButton.setBackgroundColor(getResources().getColor(R.color.defaultGrey));
                     advancedButton.setBackgroundColor(getResources().getColor(R.color.defaultGrey));
-                    workoutDescription.setText(beginnerText);
+                    beginnerDescription.setVisibility(View.VISIBLE);
+                    intermediateDescription.setVisibility(View.INVISIBLE);
+                    advancedDescription.setVisibility(View.INVISIBLE);
+
+
 
                 }
             }
@@ -124,7 +166,9 @@ public class WorkoutOverview extends AppCompatActivity {
                     beginnerButton.setBackgroundColor(getResources().getColor(R.color.defaultGrey));
                     intermediateButton.setBackgroundColor(getResources().getColor(R.color.topGreen));
                     advancedButton.setBackgroundColor(getResources().getColor(R.color.defaultGrey));
-                    workoutDescription.setText(intermediateText);
+                    beginnerDescription.setVisibility(View.INVISIBLE);
+                    intermediateDescription.setVisibility(View.VISIBLE);
+                    advancedDescription.setVisibility(View.INVISIBLE);
                 }
             }
         });
@@ -136,10 +180,14 @@ public class WorkoutOverview extends AppCompatActivity {
                     beginnerButton.setBackgroundColor(getResources().getColor(R.color.defaultGrey));
                     intermediateButton.setBackgroundColor(getResources().getColor(R.color.defaultGrey));
                     advancedButton.setBackgroundColor(getResources().getColor(R.color.topGreen));
-                    workoutDescription.setText(advancedText);
+                    beginnerDescription.setVisibility(View.INVISIBLE);
+                    intermediateDescription.setVisibility(View.INVISIBLE);
+                    advancedDescription.setVisibility(View.VISIBLE);
                 }
             }
         });
+
+
 
         startButton.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -165,7 +213,6 @@ public class WorkoutOverview extends AppCompatActivity {
             public void onClick(View v){
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                 if (user != null) {
-                    Log.i("username", user.getUid());
                     FirebaseDatabase database = FirebaseDatabase.getInstance();
                     DatabaseReference myRef = database.getReference("users/" + user.getUid());
 
@@ -192,5 +239,79 @@ public class WorkoutOverview extends AppCompatActivity {
             }
         });
 
+        Button schedule = findViewById(R.id.schedule);
+
+
+        schedule.setOnClickListener(view -> {
+            calendar = Calendar.getInstance();
+            int year = calendar.get(Calendar.YEAR);
+            int month = calendar.get(Calendar.MONTH);
+            int day = calendar.get(Calendar.DAY_OF_MONTH);
+            int hour = calendar.get(Calendar.HOUR_OF_DAY);
+            int minute = calendar.get(Calendar.MINUTE);
+
+            TimePickerDialog timePickerDialog = new TimePickerDialog(this, (timePicker, hour1, minute1) -> {
+                timePicker.setIs24HourView(true);
+                calendar.set(Calendar.HOUR_OF_DAY, hour1);
+                calendar.set(Calendar.MINUTE, minute1);
+                calendar.set(Calendar.SECOND, 0);
+                calendar.set(Calendar.YEAR, date.get(Calendar.YEAR));
+                calendar.set(Calendar.MONTH, date.get(Calendar.MONTH));
+                calendar.set(Calendar.DAY_OF_MONTH, date.get(Calendar.DAY_OF_MONTH));
+                if (calendar.before(Calendar.getInstance())){
+                    Toast.makeText(getApplicationContext(), "Can't schedule for past date",
+                            Toast.LENGTH_SHORT).show();
+                }else{
+                    AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+                    Intent intent = new Intent(getApplicationContext(), AlarmReceiverWorkout.class);
+                    int cardID = intentP.getIntExtra("cardID", 1);
+                    intent.putExtra("cardId", cardID);
+                    intent.putExtra("difficultySelection", currentSelection);
+                    intent.putExtra("imageName", intentP.getStringExtra("imageName"));
+                    intent.putExtra("notificationId", Integer.valueOf(String.valueOf(cardID) + String.valueOf(currentSelection)));
+                    mOverviewViewModel.getCard(cardID).observe(this, card -> {
+                        intent.putExtra("workoutTitle", card.getWorkoutTitle());
+                        intent.putExtra("workoutCategory", card.getWorkoutCategory());
+                        PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), 0, intent, 0);
+
+                        alarmManager.set(AlarmManager.RTC_WAKEUP,
+                                calendar.getTimeInMillis(), pendingIntent);
+                        Toast.makeText(getApplicationContext(), "Scheduled",
+                                Toast.LENGTH_SHORT).show();
+                    });
+                }
+
+            }, hour, minute, true);
+
+
+
+            DatePickerDialog datePickerDialog = new DatePickerDialog(this, (datePicker, year1, month1, day1) -> {
+                date = Calendar.getInstance();
+                date.set(Calendar.YEAR, year1);
+                date.set(Calendar.MONTH, month1);
+                date.set(Calendar.DAY_OF_MONTH, day1);
+
+                timePickerDialog.show();
+
+            }, year, month, day);
+
+            datePickerDialog.show();
+            timePickerDialog.setOnCancelListener(dialogInterface ->{
+                datePickerDialog.show();
+            });
+
+
+        });
+
     }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+        finish();
+    }
+
+
+
 }

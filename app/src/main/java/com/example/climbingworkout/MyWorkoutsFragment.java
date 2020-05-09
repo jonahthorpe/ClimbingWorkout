@@ -1,5 +1,7 @@
 package com.example.climbingworkout;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -10,6 +12,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -36,6 +39,7 @@ public class MyWorkoutsFragment extends Fragment {
     private View view;
     private RelativeLayout myWorkoutsContainer;
     private LinearLayout loggedInMessageContainer;
+    private ProgressBar progressBar;
 
     @Nullable
     @Override
@@ -49,6 +53,7 @@ public class MyWorkoutsFragment extends Fragment {
                 startActivity(intent);
             }
         });
+        progressBar = view.findViewById(R.id.progressBar);
 
         myWorkoutsContainer = view.findViewById(R.id.my_workouts_contaier);
         loggedInMessageContainer = view.findViewById(R.id.logged_in_message_container);
@@ -56,7 +61,9 @@ public class MyWorkoutsFragment extends Fragment {
         goToLogInPage.setOnClickListener(view ->{
             Intent intent = new Intent(getContext(), LogIn.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+            Activity activity = getActivity();
             startActivity(intent);
+            activity.finish();
         });
 
         return view;
@@ -65,7 +72,6 @@ public class MyWorkoutsFragment extends Fragment {
     @Override
     public void onResume(){
         super.onResume();
-
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
             myWorkoutsContainer.setVisibility(View.VISIBLE);
@@ -78,6 +84,7 @@ public class MyWorkoutsFragment extends Fragment {
             myRef.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
+                    progressBar.setVisibility(View.GONE);
                     RelativeLayout container = view.findViewById(R.id.list_container);
                     TextView emptyStateMessage = view.findViewById(R.id.empty_state_message);
                     RecyclerView myWorkoutsList = view.findViewById(R.id.my_workouts_list);
@@ -144,6 +151,7 @@ public class MyWorkoutsFragment extends Fragment {
                 }
             });
         }else{
+            progressBar.setVisibility(View.GONE);
             myWorkoutsContainer.setVisibility(View.INVISIBLE);
             loggedInMessageContainer.setVisibility(View.VISIBLE);
         }

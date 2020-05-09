@@ -70,11 +70,11 @@ public abstract class WorkoutsDatabase extends RoomDatabase {
                 // pull
                 WorkoutCard card = new WorkoutCard(1, "Pull", "Strength", "@drawable/onearmtemp");
                 cardDao.insert(card);
-                card = new WorkoutCard(2, "Push", "Strength", "@drawable/onearmtemp");
+                card = new WorkoutCard(2, "Push", "Strength", "@drawable/decline_push_up");
                 cardDao.insert(card);
-                card = new WorkoutCard(3, "Core", "Strength", "@drawable/onearmtemp");
+                card = new WorkoutCard(3, "Core", "Strength", "@drawable/bruce_lee_dragon_flags");
                 cardDao.insert(card);
-                card = new WorkoutCard(10, "Finger", "Strength", "@drawable/onearmtemp");
+                card = new WorkoutCard(10, "Finger", "Strength", "@drawable/alexhonnoldhangboard");
                     WorkoutDifficulty difficulty = new WorkoutDifficulty(4, 10, "Beginner", "");
                     difficultyDao.insert(difficulty);
                         workoutExercise = new WorkoutExercise(4, "Scapular Pull Ups", 3, "10", 1, 12, 1, 0, 0);
@@ -85,11 +85,11 @@ public abstract class WorkoutsDatabase extends RoomDatabase {
                     difficultyDao.insert(difficulty);
                 // power
                 cardDao.insert(card);
-                card = new WorkoutCard(4, "Pull", "Power", "@drawable/onearmtemp");
+                card = new WorkoutCard(4, "Pull", "Power", "@drawable/campus_board_training");
                 cardDao.insert(card);
-                card = new WorkoutCard(5, "Push", "Power", "@drawable/onearmtemp");
+                card = new WorkoutCard(5, "Push", "Power", "@drawable/plyometric_pushups");
                 cardDao.insert(card);
-                card = new WorkoutCard(6, "Core", "Power", "@drawable/onearmtemp");
+                card = new WorkoutCard(6, "Core", "Power", "@drawable/kettle_bell_swing");
                 cardDao.insert(card);
                 // endurance
                 // pull
@@ -129,11 +129,11 @@ public abstract class WorkoutsDatabase extends RoomDatabase {
                         workoutExerciseDao.insert(workoutExercise);
                         workoutExercise = new WorkoutExercise(3, "Body Weight Rows", 4, "12", 0, 120, 3, 0, 0);
                         workoutExerciseDao.insert(workoutExercise);
-                card = new WorkoutCard(8, "Push", "Endurance", "@drawable/onearmtemp");
+                card = new WorkoutCard(8, "Push", "Endurance", "@drawable/push_up");
                 cardDao.insert(card);
-                card = new WorkoutCard(9, "Core", "Endurance", "@drawable/onearmtemp");
+                card = new WorkoutCard(9, "Core", "Endurance", "@drawable/sit_up");
                 cardDao.insert(card);
-                card = new WorkoutCard(11, "Fingers", "Endurance", "@drawable/onearmtemp");
+                card = new WorkoutCard(11, "Fingers", "Endurance", "@drawable/hangboard_end");
                 cardDao.insert(card);
                     difficulty = new WorkoutDifficulty(7, 11, "Beginner", "");
                     difficultyDao.insert(difficulty);

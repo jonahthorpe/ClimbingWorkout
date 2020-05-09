@@ -4,13 +4,19 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.AlarmManager;
 import android.app.AlertDialog;
+import android.app.DatePickerDialog;
+import android.app.PendingIntent;
+import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,13 +34,16 @@ import java.util.List;
 
 public class FirebaseWorkoutOverview extends AppCompatActivity {
 
+    private Calendar calendar;
+    private Calendar date;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_firebase_workout_overview);
         Intent intentGet = getIntent();
         String key = intentGet.getStringExtra("key");
-
+        ProgressBar progressBar = findViewById(R.id.progressBar);
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         // Write a message to the database
         FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -70,6 +79,7 @@ public class FirebaseWorkoutOverview extends AppCompatActivity {
                     }
 
                     TextView description = findViewById(R.id.workout_description);
+                    progressBar.setVisibility(View.GONE);
                     description.setText(text);
                 }
 
@@ -119,5 +129,73 @@ public class FirebaseWorkoutOverview extends AppCompatActivity {
             intent.putExtra("workout", key);
             startActivity(intent);
         });
+
+        Button schedule = findViewById(R.id.schedule);
+
+
+        schedule.setOnClickListener(view -> {
+            calendar = Calendar.getInstance();
+            int year = calendar.get(Calendar.YEAR);
+            int month = calendar.get(Calendar.MONTH);
+            int day = calendar.get(Calendar.DAY_OF_MONTH);
+            int hour = calendar.get(Calendar.HOUR_OF_DAY);
+            int minute = calendar.get(Calendar.MINUTE);
+
+            TimePickerDialog timePickerDialog = new TimePickerDialog(this, (timePicker, hour1, minute1) -> {
+                timePicker.setIs24HourView(true);
+                calendar.set(Calendar.HOUR_OF_DAY, hour1);
+                calendar.set(Calendar.MINUTE, minute1);
+                calendar.set(Calendar.SECOND, 0);
+                calendar.set(Calendar.YEAR, date.get(Calendar.YEAR));
+                calendar.set(Calendar.MONTH, date.get(Calendar.MONTH));
+                calendar.set(Calendar.DAY_OF_MONTH, date.get(Calendar.DAY_OF_MONTH));
+                if (calendar.before(Calendar.getInstance())){
+                    Toast.makeText(getApplicationContext(), "Can't schedule for past date",
+                            Toast.LENGTH_SHORT).show();
+                }else{
+                    AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+                    Intent intent = new Intent(getApplicationContext(), AlarmReceiverFirebaseWorkout.class);
+                    intent.putExtra("key", key);
+                        PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), 0, intent, 0);
+
+                        alarmManager.set(AlarmManager.RTC_WAKEUP,
+                                calendar.getTimeInMillis(), pendingIntent);
+                        Toast.makeText(getApplicationContext(), "Scheduled",
+                                Toast.LENGTH_SHORT).show();
+                }
+
+            }, hour, minute, true);
+
+
+
+            DatePickerDialog datePickerDialog = new DatePickerDialog(this, (datePicker, year1, month1, day1) -> {
+                date = Calendar.getInstance();
+                date.set(Calendar.YEAR, year1);
+                date.set(Calendar.MONTH, month1);
+                date.set(Calendar.DAY_OF_MONTH, day1);
+
+                timePickerDialog.show();
+
+            }, year, month, day);
+
+            datePickerDialog.show();
+            timePickerDialog.setOnCancelListener(dialogInterface ->{
+                datePickerDialog.show();
+            });
+
+
+        });
+
     }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+        intent.putExtra("currentScreen", 2);
+        startActivity(intent);
+        finish();
+    }
+
+
 }
