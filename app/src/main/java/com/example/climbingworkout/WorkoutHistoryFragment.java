@@ -16,14 +16,13 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.room.OnConflictStrategy;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -34,10 +33,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 
 public class WorkoutHistoryFragment extends Fragment {
 
@@ -48,17 +45,13 @@ public class WorkoutHistoryFragment extends Fragment {
     private LinearLayout friday;
     private LinearLayout saturday;
     private LinearLayout sunday;
-    private ImageView previousMonth;
-    private ImageView nextMonth;
-    int month = 0;
+    private int month = 0;
     private TextView currentDateField;
     private Calendar currentCalendar;
-    private List<WorkoutLog> loggedWorkouts;
     private Calendar loggedCalendar;
     private Resources r;
     private Calendar selectedCalendar = Calendar.getInstance();
     private View view;
-    private int row;
     private int selectedId;
     private WorkoutHistoryViewModel mHistoryViewModel;
     private Context mContext;
@@ -101,22 +94,16 @@ public class WorkoutHistoryFragment extends Fragment {
             loggedInMessageContainer.setVisibility(View.INVISIBLE);
             createCalendar(month);
 
-            previousMonth = view.findViewById(R.id.prevMonth);
-            previousMonth.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    month -= 1;
-                    createCalendar(month);
-                }
+            ImageView previousMonth = view.findViewById(R.id.prevMonth);
+            previousMonth.setOnClickListener(view -> {
+                month -= 1;
+                createCalendar(month);
             });
 
-            nextMonth = view.findViewById(R.id.nextMonth);
-            nextMonth.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    month += 1;
-                    createCalendar(month);
-                }
+            ImageView nextMonth = view.findViewById(R.id.nextMonth);
+            nextMonth.setOnClickListener(view -> {
+                month += 1;
+                createCalendar(month);
             });
         }else{
             progressBar.setVisibility(View.GONE);
@@ -151,27 +138,27 @@ public class WorkoutHistoryFragment extends Fragment {
         }
     }
 
-    public int getMonth() {
+    int getMonth() {
         return month;
     }
 
-    public void setMonth(int month) {
+    void setMonth(int month) {
         this.month = month;
     }
 
-    public int getSelectedYear(){
+    int getSelectedYear(){
         return selectedCalendar.get(Calendar.YEAR);
     }
 
-    public int getSelectedMonth(){
+    int getSelectedMonth(){
         return selectedCalendar.get(Calendar.MONTH);
     }
 
-    public int getSelectedDay(){
+    int getSelectedDay(){
         return selectedCalendar.get(Calendar.DAY_OF_MONTH);
     }
 
-    public void setSelectedCalendar(int day, int month, int year) {
+    void setSelectedCalendar(int day, int month, int year) {
         selectedCalendar.set(Calendar.MONTH, month);
         selectedCalendar.set(Calendar.DAY_OF_MONTH, day);
         selectedCalendar.set(Calendar.YEAR, year);
@@ -292,7 +279,6 @@ public class WorkoutHistoryFragment extends Fragment {
 
     private void fillCalendar(Calendar calendar, int day){
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        loggedWorkouts = new ArrayList<>();
         // Write a message to the database
         if (user != null) {
             FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -330,26 +316,23 @@ public class WorkoutHistoryFragment extends Fragment {
                             text.setText(String.valueOf(i));
                             text.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
                             dayContainer.setPadding(0,Utility.dpToPx(10f,r),0,Utility.dpToPx(10f,r));
-                            text.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    TextView text = view.findViewById(selectedId);
-                                    Log.i("selected", selectedId + "");
-                                    try{
-                                    text.setBackgroundResource(0);
-                                    }catch (Exception e){
+                            text.setOnClickListener(v -> {
+                                TextView text1 = view.findViewById(selectedId);
+                                Log.i("selected", selectedId + "");
+                                try{
+                                text1.setBackgroundResource(0);
+                                }catch (Exception ignored){
 
-                                    }
-                                    selectedId =  v.getId();
-                                    selectedCalendar = calendar;
-                                    selectedCalendar.set(Calendar.DAY_OF_MONTH,selectedId);
-                                    v.setBackgroundColor(Color.parseColor("#27FF0000"));
-
-                                    TextView selectedDateText = view.findViewById(R.id.selected_date);
-                                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("d MMM yyyy");
-                                    selectedDateText.setText(simpleDateFormat.format(selectedCalendar.getTime()));
-                                    showLoggedWorkouts(dataSnapshot);
                                 }
+                                selectedId =  v.getId();
+                                selectedCalendar = calendar;
+                                selectedCalendar.set(Calendar.DAY_OF_MONTH,selectedId);
+                                v.setBackgroundColor(Color.parseColor("#27FF0000"));
+
+                                TextView selectedDateText = view.findViewById(R.id.selected_date);
+                                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("d MMM yyyy");
+                                selectedDateText.setText(simpleDateFormat.format(selectedCalendar.getTime()));
+                                showLoggedWorkouts(dataSnapshot);
                             });
                             dayContainer.setOnClickListener(new View.OnClickListener() {
                                 @Override
@@ -379,7 +362,7 @@ public class WorkoutHistoryFragment extends Fragment {
                 }
 
                 @Override
-                public void onCancelled(DatabaseError error) {
+                public void onCancelled(@NonNull DatabaseError error) {
                     // Failed to read value
                 }
 
@@ -438,7 +421,6 @@ public class WorkoutHistoryFragment extends Fragment {
                 break;
             case 0:
                 sunday.addView(dayContainer);
-                row += 1;
                 break;
         }
     }
@@ -526,6 +508,7 @@ public class WorkoutHistoryFragment extends Fragment {
             }
 
         }
+
     }
 
 

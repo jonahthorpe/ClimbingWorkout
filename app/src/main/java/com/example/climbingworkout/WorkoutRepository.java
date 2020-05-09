@@ -26,9 +26,7 @@ class WorkoutRepository {
     }
 
     void insert(WorkoutCard card){
-        WorkoutsDatabase.databaseWriteExecutor.execute(()->{
-            mWorkoutCardDao.insert(card);
-        });
+        WorkoutsDatabase.databaseWriteExecutor.execute(()-> mWorkoutCardDao.insert(card));
     }
 
 

@@ -11,7 +11,7 @@ public class UserGuide extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_guide);
-        WebView myWebView = (WebView) findViewById(R.id.user_guide);
+        WebView myWebView = findViewById(R.id.user_guide);
         myWebView.loadUrl("file:///android_asset/userguide.html");
     }
 }

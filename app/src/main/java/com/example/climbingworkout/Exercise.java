@@ -16,25 +16,23 @@ public class Exercise {
     @ColumnInfo(name="vidName")
     private String vidName;
 
-    public Exercise(String exercise, @NonNull String vidName) {
+    public Exercise(@NonNull String exercise, @NonNull String vidName) {
         this.exercise = exercise;
         this.vidName = vidName;
     }
 
+    @NonNull
     public String getExercise() {
         return exercise;
     }
 
-    public void setExercise(String exercise) {
+    public void setExercise(@NonNull String exercise) {
         this.exercise = exercise;
     }
 
     @NonNull
-    public String getVidName() {
+    String getVidName() {
         return vidName;
     }
 
-    public void setVidName(@NonNull String vidName) {
-        this.vidName = vidName;
-    }
 }

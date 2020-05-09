@@ -11,7 +11,6 @@ public class WorkoutOverviewViewModel extends AndroidViewModel {
 
     private WorkoutRepository mRepository;
 
-    private LiveData<List<WorkoutDifficulty>> mWorkouts;
 
     public WorkoutOverviewViewModel(Application application){
         super(application);

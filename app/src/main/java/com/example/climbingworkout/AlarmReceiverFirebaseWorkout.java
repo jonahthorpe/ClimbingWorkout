@@ -13,12 +13,7 @@ public class AlarmReceiverFirebaseWorkout extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-
-
-
         String key = intent.getStringExtra("key");
-
-
 
         Intent resultIntent = new Intent(context, FirebaseWorkoutOverview.class);
         resultIntent.putExtra("key", key);
@@ -36,14 +31,10 @@ public class AlarmReceiverFirebaseWorkout extends BroadcastReceiver {
                 .setAutoCancel(true);
 
 
-
         builder.setContentText("My Workout");
 
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
         // notificationId is a unique int for each notification that you must define
         notificationManager.notify(0, builder.build());
-
-
-
     }
 }

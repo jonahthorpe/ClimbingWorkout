@@ -28,9 +28,6 @@ public class WorkoutOverview extends AppCompatActivity {
 
     private int currentSelection;
     private WorkoutOverviewViewModel mOverviewViewModel;
-    private String beginnerText;
-    private String intermediateText;
-    private String advancedText;
     private String text;
     private Intent intent;
     private int beginnerWorkoutId;
@@ -38,8 +35,7 @@ public class WorkoutOverview extends AppCompatActivity {
     private int advancedWorkoutId;
     private Calendar calendar;
     private Calendar date;
-    private DatePickerDialog.OnDateSetListener mDateSetListener;
-    private TimePickerDialog.OnTimeSetListener mTimeSetListener;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -141,101 +137,86 @@ public class WorkoutOverview extends AppCompatActivity {
         image.setImageDrawable(res);
 
 
-        beginnerButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (currentSelection != 0){
-                    currentSelection = 0;
-                    beginnerButton.setBackgroundColor(getResources().getColor(R.color.topGreen));
-                    intermediateButton.setBackgroundColor(getResources().getColor(R.color.defaultGrey));
-                    advancedButton.setBackgroundColor(getResources().getColor(R.color.defaultGrey));
-                    beginnerDescription.setVisibility(View.VISIBLE);
-                    intermediateDescription.setVisibility(View.INVISIBLE);
-                    advancedDescription.setVisibility(View.INVISIBLE);
+        beginnerButton.setOnClickListener(v -> {
+            if (currentSelection != 0){
+                currentSelection = 0;
+                beginnerButton.setBackgroundColor(getResources().getColor(R.color.topGreen));
+                intermediateButton.setBackgroundColor(getResources().getColor(R.color.defaultGrey));
+                advancedButton.setBackgroundColor(getResources().getColor(R.color.defaultGrey));
+                beginnerDescription.setVisibility(View.VISIBLE);
+                intermediateDescription.setVisibility(View.INVISIBLE);
+                advancedDescription.setVisibility(View.INVISIBLE);
 
 
 
-                }
             }
         });
-        intermediateButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (currentSelection != 1) {
-                    currentSelection = 1;
-                    beginnerButton.setBackgroundColor(getResources().getColor(R.color.defaultGrey));
-                    intermediateButton.setBackgroundColor(getResources().getColor(R.color.topGreen));
-                    advancedButton.setBackgroundColor(getResources().getColor(R.color.defaultGrey));
-                    beginnerDescription.setVisibility(View.INVISIBLE);
-                    intermediateDescription.setVisibility(View.VISIBLE);
-                    advancedDescription.setVisibility(View.INVISIBLE);
-                }
+        intermediateButton.setOnClickListener(v -> {
+            if (currentSelection != 1) {
+                currentSelection = 1;
+                beginnerButton.setBackgroundColor(getResources().getColor(R.color.defaultGrey));
+                intermediateButton.setBackgroundColor(getResources().getColor(R.color.topGreen));
+                advancedButton.setBackgroundColor(getResources().getColor(R.color.defaultGrey));
+                beginnerDescription.setVisibility(View.INVISIBLE);
+                intermediateDescription.setVisibility(View.VISIBLE);
+                advancedDescription.setVisibility(View.INVISIBLE);
             }
         });
-        advancedButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (currentSelection != 2) {
-                    currentSelection = 2;
-                    beginnerButton.setBackgroundColor(getResources().getColor(R.color.defaultGrey));
-                    intermediateButton.setBackgroundColor(getResources().getColor(R.color.defaultGrey));
-                    advancedButton.setBackgroundColor(getResources().getColor(R.color.topGreen));
-                    beginnerDescription.setVisibility(View.INVISIBLE);
-                    intermediateDescription.setVisibility(View.INVISIBLE);
-                    advancedDescription.setVisibility(View.VISIBLE);
-                }
+        advancedButton.setOnClickListener(v -> {
+            if (currentSelection != 2) {
+                currentSelection = 2;
+                beginnerButton.setBackgroundColor(getResources().getColor(R.color.defaultGrey));
+                intermediateButton.setBackgroundColor(getResources().getColor(R.color.defaultGrey));
+                advancedButton.setBackgroundColor(getResources().getColor(R.color.topGreen));
+                beginnerDescription.setVisibility(View.INVISIBLE);
+                intermediateDescription.setVisibility(View.INVISIBLE);
+                advancedDescription.setVisibility(View.VISIBLE);
             }
         });
 
 
 
-        startButton.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v){
+        startButton.setOnClickListener(v -> {
+            switch(currentSelection){
+                case 0:
+                    intent.putExtra("workout", beginnerWorkoutId);
+                    break;
+                case 1:
+                    intent.putExtra("workout", intermediateWorkoutId);
+                    break;
+                case 2:
+                    intent.putExtra("workout", advancedWorkoutId);
+                    break;
+            }
+            intent.putExtra("myWorkout", false);
+            startActivity(intent);
+        });
+
+        logButton.setOnClickListener(v -> {
+            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+            if (user != null) {
+                FirebaseDatabase database = FirebaseDatabase.getInstance();
+                DatabaseReference myRef = database.getReference("users/" + user.getUid());
+
+                int id = 0;
                 switch(currentSelection){
                     case 0:
-                        intent.putExtra("workout", beginnerWorkoutId);
+                        id = beginnerWorkoutId;
                         break;
                     case 1:
-                        intent.putExtra("workout", intermediateWorkoutId);
+                        id = intermediateWorkoutId;
                         break;
                     case 2:
-                        intent.putExtra("workout", advancedWorkoutId);
+                        id = advancedWorkoutId;
                         break;
                 }
-                intent.putExtra("myWorkout", false);
-                startActivity(intent);
-            }
-        });
 
-        logButton.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v){
-                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                if (user != null) {
-                    FirebaseDatabase database = FirebaseDatabase.getInstance();
-                    DatabaseReference myRef = database.getReference("users/" + user.getUid());
-
-                    int id = 0;
-                    switch(currentSelection){
-                        case 0:
-                            id = beginnerWorkoutId;
-                            break;
-                        case 1:
-                            id = intermediateWorkoutId;
-                            break;
-                        case 2:
-                            id = advancedWorkoutId;
-                            break;
-                    }
-
-                    myRef.child("logged_workouts").push().setValue(new WorkoutLog(String.valueOf(id), Calendar.getInstance().getTime(), false));
-                    Toast.makeText(getApplicationContext(), "Logged",
-                            Toast.LENGTH_SHORT).show();
-                }else{
-                    Toast.makeText(getApplicationContext(), "Not Logged In",
-                            Toast.LENGTH_SHORT).show();
-                }
+                myRef.child("logged_workouts").push().setValue(new WorkoutLog(String.valueOf(id), Calendar.getInstance().getTime(), false));
+                Toast.makeText(getApplicationContext(), "Logged",
+                        Toast.LENGTH_SHORT).show();
+            }else{
+                Toast.makeText(getApplicationContext(), "Not Logged In",
+                        Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -296,9 +277,7 @@ public class WorkoutOverview extends AppCompatActivity {
             }, year, month, day);
 
             datePickerDialog.show();
-            timePickerDialog.setOnCancelListener(dialogInterface ->{
-                datePickerDialog.show();
-            });
+            timePickerDialog.setOnCancelListener(dialogInterface -> datePickerDialog.show());
 
 
         });

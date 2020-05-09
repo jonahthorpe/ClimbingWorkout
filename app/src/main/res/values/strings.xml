@@ -15,4 +15,9 @@
     <string name="workout_history">Workout History</string>
     <string name="my_workouts">My Workouts</string>
     <string name="submit" />
+    <string name="exercise_name">Exercise Name:</string>
+    <string name="rest_time_form">Rest Time (seconds):</string>
+    <string name="sets_form">Sets:</string>
+    <string name="workout_not_found_nworkout_may_have_been_deleted">Workout not found. Workout may have been deleted.</string>
+    <string name="go_to_my_workouts_page">Go To My Workouts Page</string>
 </resources>

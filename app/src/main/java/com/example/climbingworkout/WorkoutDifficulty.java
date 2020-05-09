@@ -21,7 +21,7 @@ public class WorkoutDifficulty {
     @ColumnInfo(name="description")
     private String description;
 
-    public WorkoutDifficulty(int workoutID, @NonNull int cardID, @NonNull String difficulty, @NonNull String description) {
+    public WorkoutDifficulty(int workoutID, int cardID, @NonNull String difficulty, @NonNull String description) {
         this.workoutID = workoutID;
         this.cardID = cardID;
         this.difficulty = difficulty;
@@ -41,7 +41,7 @@ public class WorkoutDifficulty {
         return cardID;
     }
 
-    public void setCardID(@NonNull int cardID) {
+    public void setCardID( int cardID) {
         this.cardID = cardID;
     }
 

@@ -7,6 +7,58 @@
     android:orientation="vertical"
     tools:context=".FirebaseWorkoutOverview">
 
+    <LinearLayout
+        android:id="@+id/logged_in_message_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        android:orientation="vertical"
+        android:paddingTop="10dp">
+
+        <TextView
+            android:id="@+id/logged_in_message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="You are not currently logged in.\nClick the button below to log in." />
+
+        <Button
+            android:id="@+id/go_to_log_in"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="#128B7D"
+            android:padding="10dp"
+            android:text="Go To Log in Page"
+            android:textColor="#ffffff" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/workout_not_found_message_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingTop="10dp"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/workout_not_found_message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/workout_not_found_nworkout_may_have_been_deleted" />
+
+        <Button
+            android:id="@+id/go_to_my_workouts"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="#128B7D"
+            android:padding="10dp"
+            android:text="@string/go_to_my_workouts_page"
+            android:textColor="#ffffff" />
+    </LinearLayout>
+
     <ProgressBar
         android:id="@+id/progressBar"
         style="?android:attr/progressBarStyle"
@@ -49,7 +101,8 @@
                 android:layout_marginBottom="10dp"
                 android:layout_weight="1"
                 android:background="#128B7D"
-                android:text="Start" />
+                android:text="Start"
+                android:textColor="#FFFFFF" />
 
             <Button
                 android:id="@+id/logWorkout"
@@ -61,7 +114,8 @@
                 android:layout_marginBottom="10dp"
                 android:layout_weight="1"
                 android:background="#128B7D"
-                android:text="Log" />
+                android:text="Log"
+                android:textColor="#FFFFFF" />
 
             <Button
                 android:id="@+id/delete"
@@ -73,7 +127,8 @@
                 android:layout_marginBottom="10dp"
                 android:layout_weight="1"
                 android:background="#128B7D"
-                android:text="Delete" />
+                android:text="Delete"
+                android:textColor="#FFFFFF" />
 
             <Button
                 android:id="@+id/schedule"
@@ -85,7 +140,8 @@
                 android:layout_marginBottom="10dp"
                 android:layout_weight="1"
                 android:background="#128B7D"
-                android:text="Schedule" />
+                android:text="Schedule"
+                android:textColor="#FFFFFF" />
         </LinearLayout>
     </RelativeLayout>
 

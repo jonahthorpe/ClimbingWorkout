@@ -1,7 +1,6 @@
 package com.example.climbingworkout;
 
 import android.app.Application;
-import android.icu.lang.UCharacter;
 
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;

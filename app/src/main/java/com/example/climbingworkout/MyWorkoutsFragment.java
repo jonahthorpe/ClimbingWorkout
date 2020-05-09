@@ -1,29 +1,23 @@
 package com.example.climbingworkout;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.room.PrimaryKey;
-
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -46,12 +40,9 @@ public class MyWorkoutsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_my_workouts, container, false);
         FloatingActionButton fab = view.findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getContext(), AddWorkout.class);
-                startActivity(intent);
-            }
+        fab.setOnClickListener(v -> {
+            Intent intent = new Intent(getContext(), AddWorkout.class);
+            startActivity(intent);
         });
         progressBar = view.findViewById(R.id.progressBar);
 
@@ -125,10 +116,10 @@ public class MyWorkoutsFragment extends Fragment {
                         }
 
                         if (workoutNames.isEmpty()) {
-                            myWorkoutsList.setVisibility(view.INVISIBLE);
+                            myWorkoutsList.setVisibility(View.INVISIBLE);
                             emptyStateMessage.setText("No workouts found.\nTry clicking the add button to create your first workout!");
                         } else {
-                            myWorkoutsList.setVisibility(view.VISIBLE);
+                            myWorkoutsList.setVisibility(View.VISIBLE);
                             emptyStateMessage.setText("");
                         }
 
@@ -139,13 +130,13 @@ public class MyWorkoutsFragment extends Fragment {
                         myWorkoutsList.setAdapter(adapter);
                         myWorkoutsList.setLayoutManager(new LinearLayoutManager(getContext()));
                     } else {
-                        myWorkoutsList.setVisibility(view.INVISIBLE);
+                        myWorkoutsList.setVisibility(View.INVISIBLE);
                         emptyStateMessage.setText("No workouts found.\nTry clicking the add button to create your first workout!");
                     }
                 }
 
                 @Override
-                public void onCancelled(DatabaseError error) {
+                public void onCancelled(@NonNull DatabaseError error) {
                     // Failed to read value
 
                 }

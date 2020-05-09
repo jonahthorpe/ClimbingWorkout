@@ -128,7 +128,9 @@
                     android:layout_marginBottom="10dp"
                     android:layout_weight="1"
                     android:background="#128B7D"
-                    android:text="Start" />
+                    android:text="Start"
+                    android:textColor="#FFFFFF"
+                    android:textColorHighlight="#FFFFFF" />
 
                 <Button
                     android:id="@+id/logWorkout"
@@ -136,11 +138,12 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
                     android:layout_marginTop="10dp"
-                    android:layout_marginRight="5dp"
+                    android:layout_marginRight="10dp"
                     android:layout_marginBottom="10dp"
                     android:layout_weight="1"
                     android:background="#128B7D"
-                    android:text="Log" />
+                    android:text="Log"
+                    android:textColor="#FFFFFF" />
 
                 <Button
                     android:id="@+id/schedule"
@@ -152,7 +155,8 @@
                     android:layout_marginBottom="10dp"
                     android:layout_weight="1"
                     android:background="#128B7D"
-                    android:text="Schedule" />
+                    android:text="Schedule"
+                    android:textColor="#FFFFFF" />
             </LinearLayout>
 
         </RelativeLayout>

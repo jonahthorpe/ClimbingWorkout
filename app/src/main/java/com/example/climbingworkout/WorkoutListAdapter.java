@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -24,7 +23,7 @@ public class WorkoutListAdapter extends RecyclerView.Adapter<WorkoutListAdapter.
     private ArrayList<String> keys = new ArrayList<>();
     private Context context;
 
-    public WorkoutListAdapter(Context context, ArrayList<String> workoutNames, ArrayList<String> firstExercises, ArrayList<String> secondExercises, ArrayList<String> thirdExercise, ArrayList<String> keys) {
+    WorkoutListAdapter(Context context, ArrayList<String> workoutNames, ArrayList<String> firstExercises, ArrayList<String> secondExercises, ArrayList<String> thirdExercise, ArrayList<String> keys) {
         this.context = context;
         this.workoutNames = workoutNames;
         this.firstExercises = firstExercises;
@@ -37,8 +36,7 @@ public class WorkoutListAdapter extends RecyclerView.Adapter<WorkoutListAdapter.
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_listitem, parent, false);
-        ViewHolder holder = new ViewHolder(view);
-        return holder;
+        return new ViewHolder(view);
     }
 
     @Override
@@ -49,13 +47,10 @@ public class WorkoutListAdapter extends RecyclerView.Adapter<WorkoutListAdapter.
         holder.exercise2.setText( secondExercises.get(position));
         holder.exercise3.setText( thirdExercise.get(position));
 
-        holder.containerLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(context, FirebaseWorkoutOverview.class);
-                intent.putExtra("key", keys.get(position));
-                context.startActivity(intent);
-            }
+        holder.containerLayout.setOnClickListener(v -> {
+            Intent intent = new Intent(context, FirebaseWorkoutOverview.class);
+            intent.putExtra("key", keys.get(position));
+            context.startActivity(intent);
         });
     }
 
@@ -64,7 +59,7 @@ public class WorkoutListAdapter extends RecyclerView.Adapter<WorkoutListAdapter.
         return workoutNames.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
+    class ViewHolder extends RecyclerView.ViewHolder{
 
         TextView workoutName;
         TextView exercise1;
@@ -72,7 +67,7 @@ public class WorkoutListAdapter extends RecyclerView.Adapter<WorkoutListAdapter.
         TextView exercise3;
         LinearLayout containerLayout;
 
-        public ViewHolder(@NonNull View itemView) {
+        ViewHolder(@NonNull View itemView) {
             super(itemView);
             workoutName = itemView.findViewById(R.id.workout_name);
             exercise1 = itemView.findViewById(R.id.exercise1);

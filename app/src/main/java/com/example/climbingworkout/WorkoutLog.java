@@ -8,7 +8,7 @@ public class WorkoutLog {
     public Date logged_date;
     public Boolean my_workout;
 
-    public WorkoutLog(String workout_id, Date logged_date, Boolean my_workout) {
+    WorkoutLog(String workout_id, Date logged_date, Boolean my_workout) {
         this.workout_id = workout_id;
         this.logged_date = logged_date;
         this.my_workout = my_workout;
@@ -16,7 +16,7 @@ public class WorkoutLog {
 
     public WorkoutLog() {}
 
-    public String getWorkout_id() {
+    String getWorkout_id() {
         return workout_id;
     }
 
@@ -24,7 +24,7 @@ public class WorkoutLog {
         this.workout_id = workout_id;
     }
 
-    public Date getLogged_date() {
+    Date getLogged_date() {
         return logged_date;
     }
 
@@ -32,7 +32,7 @@ public class WorkoutLog {
         this.logged_date = logged_date;
     }
 
-    public Boolean isMy_workout() {
+    Boolean isMy_workout() {
         return my_workout;
     }
 

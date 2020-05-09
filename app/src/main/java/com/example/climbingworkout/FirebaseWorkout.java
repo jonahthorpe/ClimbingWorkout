@@ -4,8 +4,8 @@ import java.util.ArrayList;
 
 public class FirebaseWorkout {
 
-    public String workout_name;
-    public ArrayList<WorkoutExercise> exercises;
+    private String workout_name;
+    private ArrayList<WorkoutExercise> exercises;
 
 
     public FirebaseWorkout ( String workout_name, ArrayList<WorkoutExercise> exercises) {

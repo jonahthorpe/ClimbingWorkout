@@ -1,26 +1,22 @@
 package com.example.climbingworkout;
 
-import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
-import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Build;
-import android.util.Log;
 import android.util.TypedValue;
 
-public class Utility {
+class Utility {
 
-    public static final String MAIN_CHANNEL = "MainChannel";
+    static final String MAIN_CHANNEL = "MainChannel";
 
 
     private Utility() {
 
     }
 
-    public static int dpToPx(Float dp, Resources r){
+    static int dpToPx(Float dp, Resources r){
         /*
         https://stackoverflow.com/questions/4605527/converting-pixels-to-dp
         05/04/2020
@@ -33,7 +29,7 @@ public class Utility {
         return px;
     }
 
-    public static void createNotificationChannel(Context context) {
+    static void createNotificationChannel(Context context) {
         // Create the NotificationChannel, but only on API 26+ because
         // the NotificationChannel class is new and not in the support library
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {

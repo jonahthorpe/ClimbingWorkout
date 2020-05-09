@@ -80,6 +80,35 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="0dp">
+            <RelativeLayout
+                android:id="@+id/workout_description"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/beginner_workout_description"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:text="TextView" />
+
+                <TextView
+                    android:id="@+id/intermediate_workout_description"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:text="TextView" />
+
+                <TextView
+                    android:id="@+id/advanced_workout_description"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:text="TextView" />
+            </RelativeLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -101,7 +130,8 @@
                     android:layout_marginBottom="10dp"
                     android:layout_weight="1"
                     android:background="#128B7D"
-                    android:text="Start" />
+                    android:text="Start"
+                    android:textColor="#FFFFFF" />
 
                 <Button
                     android:id="@+id/logWorkout"
@@ -109,11 +139,12 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
                     android:layout_marginTop="10dp"
-                    android:layout_marginRight="5dp"
+                    android:layout_marginRight="10dp"
                     android:layout_marginBottom="10dp"
                     android:layout_weight="1"
                     android:background="#128B7D"
-                    android:text="Log" />
+                    android:text="Log"
+                    android:textColor="#FFFFFF" />
 
                 <Button
                     android:id="@+id/schedule"
@@ -125,16 +156,10 @@
                     android:layout_marginBottom="10dp"
                     android:layout_weight="1"
                     android:background="#128B7D"
-                    android:text="Schedule" />
+                    android:text="Schedule"
+                    android:textColor="#FFFFFF" />
             </LinearLayout>
 
-            <TextView
-                android:id="@+id/workout_description"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginStart="10dp"
-                android:layout_marginEnd="10dp"
-                android:text="TextView" />
 
         </RelativeLayout>
 

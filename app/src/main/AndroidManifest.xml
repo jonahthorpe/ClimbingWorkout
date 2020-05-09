@@ -26,8 +26,6 @@
         </activity>
         <activity android:name=".LogIn" />
 
-        <service android:name=".Timer" />
-
         <receiver
             android:name=".AlarmReceiverWorkout"
             android:enabled="true">

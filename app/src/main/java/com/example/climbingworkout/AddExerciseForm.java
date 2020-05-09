@@ -1,23 +1,15 @@
 package com.example.climbingworkout;
 
 import android.content.Context;
-import android.text.Editable;
 import android.text.InputType;
-import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.NumberPicker;
 import android.widget.Spinner;
 import android.widget.TextView;
-
-import androidx.appcompat.widget.AppCompatTextView;
-
 import java.util.ArrayList;
-import java.util.List;
 
 public class AddExerciseForm {
 
@@ -32,13 +24,13 @@ public class AddExerciseForm {
 
 
 
-    public void createAddExerciseForm(LinearLayout container, Context context, Integer amount){
+    void createAddExerciseForm(LinearLayout container, Context context, Integer amount){
         LinearLayout infoRow = new LinearLayout(context);
         container.addView(infoRow);
 
 
         TextView text = new TextView(context);
-        text.setText("Exercise Name: ");
+        text.setText(context.getResources().getString(R.string.exercise_name));
         text.setLayoutParams( new LinearLayout.LayoutParams(
                         LinearLayout.LayoutParams.WRAP_CONTENT,
                         LinearLayout.LayoutParams.WRAP_CONTENT
@@ -57,7 +49,7 @@ public class AddExerciseForm {
         infoRow = new LinearLayout(context);
         container.addView(infoRow);
         text = new TextView(context);
-        text.setText("Rest Time (seconds): ");
+        text.setText(context.getResources().getString(R.string.rest_time_form));
         text.setLayoutParams( new LinearLayout.LayoutParams(
                         LinearLayout.LayoutParams.WRAP_CONTENT,
                         LinearLayout.LayoutParams.WRAP_CONTENT
@@ -76,7 +68,7 @@ public class AddExerciseForm {
         infoRow = new LinearLayout(context);
         container.addView(infoRow);
         text = new TextView(context);
-        text.setText("Sets: ");
+        text.setText(context.getResources().getString(R.string.sets_form));
         text.setLayoutParams( new LinearLayout.LayoutParams(
                         LinearLayout.LayoutParams.WRAP_CONTENT,
                         LinearLayout.LayoutParams.WRAP_CONTENT
@@ -141,9 +133,6 @@ public class AddExerciseForm {
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
                 switch (repType.getSelectedItem().toString()){
                     case "Reps":
-                        repeaterOn.setVisibility(View.INVISIBLE);
-                        repeaterOff.setVisibility(View.INVISIBLE);
-                        break;
                     case "Seconds":
                         repeaterOn.setVisibility(View.INVISIBLE);
                         repeaterOff.setVisibility(View.INVISIBLE);
@@ -168,12 +157,11 @@ public class AddExerciseForm {
         }
     }
 
-    protected Boolean checkInputsValid(Boolean valid){
+    Boolean checkInputsValid(Boolean valid){
         String name = exerciseName.getText().toString();
         String setS = setAmount.getText().toString();
         String repS = repAmount.getText().toString();
         String restS = restTime.getText().toString();
-        String repTypeS = repType.getSelectedItem().toString();
 
         if (name.length() == 0){
             exerciseName.setError("Enter a name");
@@ -192,7 +180,7 @@ public class AddExerciseForm {
         }
 
         if (repS.length() == 0){
-            repAmount.setError("Enter a numberv");
+            repAmount.setError("Enter a number");
             repAmount.setBackgroundResource(R.drawable.error_edit_text);
             valid = false;
         }else{

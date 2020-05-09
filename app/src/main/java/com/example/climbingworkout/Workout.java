@@ -1,24 +1,19 @@
 package com.example.climbingworkout;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.util.Log;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.MediaController;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
-
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -26,7 +21,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,7 +28,6 @@ public class Workout extends AppCompatActivity {
 
     private WorkoutViewModel mWorkoutViewModel;
     private CountDownTimer timer;
-    private long remainingTime;
     private ImageButton playButton;
     private long timeLeft;
     private TextView counter;
@@ -54,7 +47,7 @@ public class Workout extends AppCompatActivity {
     private ImageView nextSet;
     private Boolean resting = true;
     private TextView timer_label;
-    private Boolean isMyWokout;
+    private Boolean isMyWorkout;
     private  WorkoutExercise exercise;
     private int repNumber = 1 ;
     private boolean isRepeaterOn;
@@ -64,7 +57,7 @@ public class Workout extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_workout);
         intent = getIntent();
-        isMyWokout = intent.getBooleanExtra("myWorkout", true);
+        isMyWorkout = intent.getBooleanExtra("myWorkout", true);
 
 
         timer_label = findViewById(R.id.timer_label);
@@ -212,7 +205,7 @@ public class Workout extends AppCompatActivity {
     }
 
     @Override
-    protected void onSaveInstanceState(Bundle outState) {
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putLong("timeLeft", timeLeft);
         outState.putBoolean("playing", playing);
@@ -230,7 +223,7 @@ public class Workout extends AppCompatActivity {
     }
 
     @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+    protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
 
         timeLeft = savedInstanceState.getLong("timeLeft");
@@ -268,7 +261,7 @@ public class Workout extends AppCompatActivity {
     }
 
 
-    protected void testfunc(List<WorkoutExercise> exercises){
+    protected void outputExercise(List<WorkoutExercise> exercises){
         exercise = exercises.get(currentExercise);
         if (set > exercise.getSets()){
             currentExercise += 1;
@@ -323,7 +316,7 @@ public class Workout extends AppCompatActivity {
         }
         sets.setText("Sets: "+ set +"/" + exercise.getSets());
 
-        if (!isMyWokout) {
+        if (!isMyWorkout) {
             mWorkoutViewModel = new ViewModelProvider(this).get(WorkoutViewModel.class);
             mWorkoutViewModel.getExerciseVid(exercise.getExercise()).observe(this, exerciseVids -> {
                 int id = getResources().getIdentifier(exerciseVids.get(0), "raw", getPackageName());
@@ -390,7 +383,7 @@ public class Workout extends AppCompatActivity {
     }
 
     protected void updateUI(){
-        if (isMyWokout){
+        if (isMyWorkout){
             FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
             // Write a message to the database
             FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -404,7 +397,7 @@ public class Workout extends AppCompatActivity {
                     if (dataSnapshot.exists()) {
                         FirebaseWorkout workout = dataSnapshot.getValue(FirebaseWorkout.class);
                         ArrayList<WorkoutExercise> exercises = workout.getExercises();
-                        testfunc(exercises);
+                        outputExercise(exercises);
                     }
 
                 }
@@ -416,9 +409,7 @@ public class Workout extends AppCompatActivity {
                 }
             });
         }else {
-            mWorkoutViewModel.getExercises(intent.getIntExtra("workout", 0)).observe(this, exercises -> {
-                testfunc(exercises);
-            });
+            mWorkoutViewModel.getExercises(intent.getIntExtra("workout", 0)).observe(this, this::outputExercise);
         }
     }
 
