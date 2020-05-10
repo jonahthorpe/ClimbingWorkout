@@ -10,6 +10,9 @@ import android.util.TypedValue;
 class Utility {
 
     static final String MAIN_CHANNEL = "MainChannel";
+    static  final int REPS = 0;
+    static  final int SETS = 0;
+    static  final int REPEATERS = 0;
 
 
     private Utility() {
@@ -21,12 +24,11 @@ class Utility {
         https://stackoverflow.com/questions/4605527/converting-pixels-to-dp
         05/04/2020
          */
-        int px = Math.round(TypedValue.applyDimension(
+        return Math.round(TypedValue.applyDimension(
                 TypedValue.COMPLEX_UNIT_DIP,
                 dp,
                 r.getDisplayMetrics()
         ));
-        return px;
     }
 
     static void createNotificationChannel(Context context) {
