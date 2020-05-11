@@ -371,7 +371,7 @@ public abstract class WorkoutsDatabase extends RoomDatabase {
             card = new WorkoutCard(10, "Push", "Power", "@drawable/plyometric_pushups");
             cardDao.insert(card);
                 // beginner
-                difficulty = new WorkoutDifficulty(25, 9, "Beginner", "This workout is designed to increase you power in pushing motions. It is recommended to be able to complete the intermediate strength workout before starting this. This workout will help with dynamic and big" +
+                difficulty = new WorkoutDifficulty(28, 10, "Beginner", "This workout is designed to increase you power in pushing motions. It is recommended to be able to complete the intermediate strength workout before starting this. This workout will help with dynamic and big" +
                         " moves while climbing. If this is to hard, try build some foundation strength with the strength workouts as well as lowering the overall volume. When you can comfortably complete this workout, you can move onto the intermediate one.");
                 difficultyDao.insert(difficulty);
                     // exercises
@@ -379,7 +379,7 @@ public abstract class WorkoutsDatabase extends RoomDatabase {
 
 
                 // advanced
-                difficulty = new WorkoutDifficulty(26, 9, "Advanced", "This workout is designed to increase you power in pushing motions. This workout will help with dynamic and big moves while climbing. if this is too easy, you can try adding weights" +
+                difficulty = new WorkoutDifficulty(29, 10, "Advanced", "This workout is designed to increase you power in pushing motions. This workout will help with dynamic and big moves while climbing. if this is too easy, you can try adding weights" +
                         " or experiment with new explosive exercises.");
                 difficultyDao.insert(difficulty);
                     // exercise
@@ -387,7 +387,7 @@ public abstract class WorkoutsDatabase extends RoomDatabase {
 
 
                 // intermediate
-                difficulty = new WorkoutDifficulty(27, 9, "Intermediate", "This workout is designed to increase you power in pushing motions. This workout will help with dynamic and big moves while climbing. If this is too hard you can try decreasing volume and increasing " +
+                difficulty = new WorkoutDifficulty(39, 10, "Intermediate", "This workout is designed to increase you power in pushing motions. This workout will help with dynamic and big moves while climbing. If this is too hard you can try decreasing volume and increasing " +
                         "rest time. When you can comfortably complete this workout, you can move onto the advanced one.");
                 difficultyDao.insert(difficulty);
                     // exercises
@@ -395,7 +395,7 @@ public abstract class WorkoutsDatabase extends RoomDatabase {
             card = new WorkoutCard(11, "Core", "Power", "@drawable/kettle_bell_swing");
             cardDao.insert(card);
                 // beginner
-                difficulty = new WorkoutDifficulty(25, 9, "Beginner", "This workout is designed to increase you power in your core area. It is recommended to be able to complete the beginner strength workout before starting this. This workout will help with dynamic and big" +
+                difficulty = new WorkoutDifficulty(31, 11, "Beginner", "This workout is designed to increase you power in your core area. It is recommended to be able to complete the beginner strength workout before starting this. This workout will help with dynamic and big" +
                         " moves while climbing. If this is to hard, try build some foundation strength with the strength workouts as well as lowering the overall volume. When you can comfortably complete this workout, you can move onto the intermediate one.");
                 difficultyDao.insert(difficulty);
                 // exercises
@@ -403,7 +403,7 @@ public abstract class WorkoutsDatabase extends RoomDatabase {
 
 
                 // advanced
-                difficulty = new WorkoutDifficulty(26, 9, "Advanced", "This workout is designed to increase you power iin your core area. This workout will help with dynamic and big moves while climbing. if this is too easy, you can try adding weights" +
+                difficulty = new WorkoutDifficulty(32, 11, "Advanced", "This workout is designed to increase you power iin your core area. This workout will help with dynamic and big moves while climbing. if this is too easy, you can try adding weights" +
                         " or experiment with new explosive exercises.");
                 difficultyDao.insert(difficulty);
                 // exercise
@@ -411,7 +411,7 @@ public abstract class WorkoutsDatabase extends RoomDatabase {
 
 
                 // intermediate
-                difficulty = new WorkoutDifficulty(27, 9, "Intermediate", "This workout is designed to increase you power in your core area. This workout will help with dynamic and big moves while climbing. If this is too hard you can try decreasing volume and increasing " +
+                difficulty = new WorkoutDifficulty(33, 11, "Intermediate", "This workout is designed to increase you power in your core area. This workout will help with dynamic and big moves while climbing. If this is too hard you can try decreasing volume and increasing " +
                         "rest time. When you can comfortably complete this workout, you can move onto the advanced one.");
                 difficultyDao.insert(difficulty);
                 // exercises
