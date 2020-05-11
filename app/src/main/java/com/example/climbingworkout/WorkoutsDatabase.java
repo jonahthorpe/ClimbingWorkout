@@ -73,8 +73,23 @@ public abstract class WorkoutsDatabase extends RoomDatabase {
                 exercise = new Exercise("Wide Push Ups", "wide_push_up_no_sound");
                 exerciseDao.insert(exercise);
                 exercise = new Exercise("Narrow Push Ups", "narrow_push_up_no_sound");
-
                 exerciseDao.insert(exercise);
+                exercise = new Exercise("Crunches", "crunches_no_sound");
+                exerciseDao.insert(exercise);
+                exercise = new Exercise("Arch Ups", "arch_ups_no_sound");
+                exerciseDao.insert(exercise);
+                exercise = new Exercise("Plank", "plank_no_sound");
+                exerciseDao.insert(exercise);
+                exercise = new Exercise("Side Plank Left", "side_plank_no_sound");
+                exerciseDao.insert(exercise);
+                exercise = new Exercise("Side Plank Right", "side_plank_no_sound");
+                exerciseDao.insert(exercise);
+                exercise = new Exercise("Bicycle Crunches", "bicycle_crunch_no_sound");
+                exerciseDao.insert(exercise);
+                exercise = new Exercise("Repeaters", "repeaters_no_sound");
+                exerciseDao.insert(exercise);
+
+
                 WorkoutExerciseDao workoutExerciseDao = INSTANCE.workoutExerciseDao();
                 workoutExerciseDao.deleteAll();
                 WorkoutExercise workoutExercise;
@@ -176,6 +191,16 @@ public abstract class WorkoutsDatabase extends RoomDatabase {
                         "Once you can comfortably complete this workout, you can move on to the intermediate workout.");
                 difficultyDao.insert(difficulty);
                     // exercises
+                    workoutExercise = new WorkoutExercise(7, "Crunches", 3, "10", Utility.REPS, 120, 1, 0, 0);
+                    workoutExerciseDao.insert(workoutExercise);
+                    workoutExercise = new WorkoutExercise(7, "Arch Ups", 3, "30", Utility.TIME, 120, 2, 0, 0);
+                    workoutExerciseDao.insert(workoutExercise);
+                    workoutExercise = new WorkoutExercise(7, "Plank", 3, "30", Utility.TIME, 120, 3, 0, 0);
+                    workoutExerciseDao.insert(workoutExercise);
+                    workoutExercise = new WorkoutExercise(7, "Side Plank Left", 2, "30", Utility.TIME, 120, 4, 0, 0);
+                    workoutExerciseDao.insert(workoutExercise);
+                    workoutExercise = new WorkoutExercise(7, "Side Plank Right", 2, "30", Utility.TIME, 120, 5, 0, 0);
+                    workoutExerciseDao.insert(workoutExercise);
 
 
 
@@ -184,6 +209,16 @@ public abstract class WorkoutsDatabase extends RoomDatabase {
                         " To make this workout harder, you can increase the amount of set and reps you complete, as well as reducing the amount of rest you take.");
                 difficultyDao.insert(difficulty);
                     // exercise
+                    workoutExercise = new WorkoutExercise(8, "Bicycle Crunches", 3, "45", Utility.TIME, 120, 1, 0, 0);
+                    workoutExerciseDao.insert(workoutExercise);
+                    workoutExercise = new WorkoutExercise(8, "Arch Ups", 3, "60", Utility.TIME, 120, 2, 0, 0);
+                    workoutExerciseDao.insert(workoutExercise);
+                    workoutExercise = new WorkoutExercise(8, "Plank", 3, "60", Utility.TIME, 120, 3, 0, 0);
+                    workoutExerciseDao.insert(workoutExercise);
+                    workoutExercise = new WorkoutExercise(8, "Side Plank Left", 2, "60", Utility.TIME, 120, 4, 0, 0);
+                    workoutExerciseDao.insert(workoutExercise);
+                    workoutExercise = new WorkoutExercise(8, "Side Plank Right", 2, "60", Utility.TIME, 120, 5, 0, 0);
+                    workoutExerciseDao.insert(workoutExercise);
 
 
 
@@ -192,6 +227,16 @@ public abstract class WorkoutsDatabase extends RoomDatabase {
                         "Once you can complete this workout comfortably, you can move onto the advanced workout.");
                 difficultyDao.insert(difficulty);
                     // exercises
+                    workoutExercise = new WorkoutExercise(9, "Bicycle Crunches", 3, "30", Utility.TIME, 120, 1, 0, 0);
+                    workoutExerciseDao.insert(workoutExercise);
+                    workoutExercise = new WorkoutExercise(9, "Arch Ups", 3, "45", Utility.TIME, 120, 2, 0, 0);
+                    workoutExerciseDao.insert(workoutExercise);
+                    workoutExercise = new WorkoutExercise(9, "Plank", 3, "45", Utility.TIME, 120, 3, 0, 0);
+                    workoutExerciseDao.insert(workoutExercise);
+                    workoutExercise = new WorkoutExercise(9, "Side Plank Left", 2, "45", Utility.TIME, 120, 4, 0, 0);
+                    workoutExerciseDao.insert(workoutExercise);
+                    workoutExercise = new WorkoutExercise(9, "Side Plank Right", 2, "45", Utility.TIME, 120, 5, 0, 0);
+                    workoutExerciseDao.insert(workoutExercise);
 
             // fingers
             card = new WorkoutCard(4, "Fingers", "Endurance", "@drawable/hangboard_end");
@@ -200,7 +245,9 @@ public abstract class WorkoutsDatabase extends RoomDatabase {
                 difficulty = new WorkoutDifficulty(10, 4, "Beginner", "This workout is designed to develop the necessary strength to complete more specific workouts as well as to get use to hangboarding. It was created for people who new to hangboarding. Use an edge size around 28 mm. " +
                         "You should use variety grips types through out the workout, such as : 4 fingers crimp, 4 fingers open, front 3 open and back 3 open. If this is too difficult, you can reduce the amount sets you perform as well reducing your weight with a pulley system.");
                 difficultyDao.insert(difficulty);
-                // exercises
+                    // exercises
+                    workoutExercise = new WorkoutExercise(10, "Repeaters", 3, "6", Utility.REPEATERS, 120, 1, 7, 3);
+                    workoutExerciseDao.insert(workoutExercise);
 
 
 
@@ -209,7 +256,9 @@ public abstract class WorkoutsDatabase extends RoomDatabase {
                         " Use an edge size around 20 mm. You should use variety grips types through out the workout, such as : 4 fingers crimp, 4 fingers open, front 3 open and back 3 open. To make this harder, you can increase the amount of set or reps you complete, " +
                         "as well as adding weight to your body.");
                 difficultyDao.insert(difficulty);
-                // exercise
+                    // exercise
+                    workoutExercise = new WorkoutExercise(11, "Repeaters", 7, "6", Utility.REPEATERS, 120, 1, 7, 3);
+                    workoutExerciseDao.insert(workoutExercise);
 
 
 
@@ -217,7 +266,9 @@ public abstract class WorkoutsDatabase extends RoomDatabase {
                 difficulty = new WorkoutDifficulty(12, 4, "Intermediate", "This workout is developed for people somewhat comfortable with hangboarding. It is designed to improve how long you can stay on the wall before you get pumped out." +
                         " Use an edge size around 25 mm. You should use variety grips types through out the workout, such as : 4 fingers crimp, 4 fingers open, front 3 open and back 3 open. Once you can complete this workout comfortably, you can move onto the advanced workout.");
                 difficultyDao.insert(difficulty);
-                // exercises
+                    // exercises
+                    workoutExercise = new WorkoutExercise(12, "Repeaters", 5, "6", Utility.REPEATERS, 120, 1, 7, 3);
+                    workoutExerciseDao.insert(workoutExercise);
 
 
 
@@ -319,7 +370,7 @@ public abstract class WorkoutsDatabase extends RoomDatabase {
             card = new WorkoutCard(8, "Finger", "Strength", "@drawable/alexhonnoldhangboard");
             cardDao.insert(card);
                 // beginner
-                difficulty = new WorkoutDifficulty(22, 4, "Beginner", "This workout is designed to develop the necessary strength to complete more specific workouts as well as to get use to hangboarding. It was created for people who new to hangboarding. Use an edge size around 20 mm. " +
+                difficulty = new WorkoutDifficulty(22, 8, "Beginner", "This workout is designed to develop the necessary strength to complete more specific workouts as well as to get use to hangboarding. It was created for people who new to hangboarding. Use an edge size around 20 mm. " +
                         "You should use variety grips types through out the workout, such as : 4 fingers crimp, 4 fingers open, front 3 open and back 3 open. If this is too difficult, you can reduce the amount sets you perform as well reducing your weight with a pulley system.");
                 difficultyDao.insert(difficulty);
                     // exercises
@@ -327,7 +378,7 @@ public abstract class WorkoutsDatabase extends RoomDatabase {
 
 
                 // advanced
-                difficulty = new WorkoutDifficulty(23, 4, "Advanced", "This workout is developed for people very comfortable with hangboarding. It is designed to help you hold on to smaller holds and steeper angels." +
+                difficulty = new WorkoutDifficulty(23, 8, "Advanced", "This workout is developed for people very comfortable with hangboarding. It is designed to help you hold on to smaller holds and steeper angels." +
                         " Use an edge size around 20 mm. You should use variety grips types through out the workout, such as : 4 fingers crimp, 4 fingers open, front 3 open and back 3 open. To make this harder, you can increase the amount of sets you complete, " +
                         "as well as adding weight to your body. You can also try different style of strength workouts such as one arm hangs.");
                 difficultyDao.insert(difficulty);
@@ -336,7 +387,7 @@ public abstract class WorkoutsDatabase extends RoomDatabase {
 
 
                 // intermediate
-                difficulty = new WorkoutDifficulty(24, 4, "Intermediate", "This workout is developed for people somewhat comfortable with hangboarding. It is designed to help you hold on to smaller holds and steeper angels." +
+                difficulty = new WorkoutDifficulty(24, 8, "Intermediate", "This workout is developed for people somewhat comfortable with hangboarding. It is designed to help you hold on to smaller holds and steeper angels." +
                         " Use an edge size around 20 mm. You should use variety grips types through out the workout, such as : 4 fingers crimp, 4 fingers open, front 3 open and back 3 open. Once you can complete this workout comfortably, you can move onto the advanced workout.");
                 difficultyDao.insert(difficulty);
                     // exercises

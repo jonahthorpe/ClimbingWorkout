@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
         android:id="@+id/sign_out_login_in"
@@ -10,4 +11,20 @@
     <item
         android:id="@+id/user_guide_menu_item"
         android:title="User Guide" />
+    <item
+        android:title="Useful Resources"
+        android:visible="true"
+        app:showAsAction="never">
+        <menu>
+            <item
+                android:id="@+id/lattice"
+                android:title="Lattice" />
+            <item
+                android:id="@+id/fitness_faqs"
+                android:title="FitnessFAQS" />
+            <item
+                android:id="@+id/calisthenic_movement"
+                android:title="Calisthenicmovement" />
+        </menu>
+    </item>
 </menu>

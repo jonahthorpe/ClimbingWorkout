@@ -11,8 +11,8 @@ class Utility {
 
     static final String MAIN_CHANNEL = "MainChannel";
     static  final int REPS = 0;
-    static  final int SETS = 0;
-    static  final int REPEATERS = 0;
+    static  final int TIME = 1;
+    static  final int REPEATERS = 2;
 
 
     private Utility() {

@@ -5,6 +5,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -67,6 +68,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         Intent intent;
+        Intent browserIntent;
+        Intent ytIntent;
         // Handle item selection
         switch (item.getItemId()) {
             case R.id.sign_out_login_in:
@@ -79,13 +82,45 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
                 return true;
             case R.id.find_gyms:
-                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.google.com/search?q=climbing+gyms+around+me"));
+                browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.google.com/search?q=climbing+gyms+around+me"));
                 startActivity(browserIntent);
                 return true;
             case R.id.user_guide_menu_item:
                 intent = new Intent(this, UserGuide.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                 startActivity(intent);
+                return true;
+            case R.id.lattice:
+                // try open youtube app
+                // if cant open youtube, open it in browser
+                ytIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube:UCMQzIsi7kwz1_xZjqNhz9kw"));
+                browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://m.youtube.com/channel/UCMQzIsi7kwz1_xZjqNhz9kw"));
+                try {
+                    startActivity(ytIntent);
+                } catch (ActivityNotFoundException e) {
+                    startActivity(browserIntent);
+                }
+                startActivity(browserIntent);
+                return true;
+            case R.id.fitness_faqs:
+                ytIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube:FitnessFAQs"));
+                browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://m.youtube.com/user/FitnessFAQs"));
+                try {
+                    startActivity(ytIntent);
+                } catch (ActivityNotFoundException e) {
+                    startActivity(browserIntent);
+                }
+                startActivity(browserIntent);
+                return true;
+            case R.id.calisthenic_movement:
+                ytIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube:UCZIIRX8rkNjVpP-oLMHpeDw"));
+                browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://m.youtube.com/channel/UCZIIRX8rkNjVpP-oLMHpeDw"));
+                try {
+                    startActivity(ytIntent);
+                } catch (ActivityNotFoundException e) {
+                    startActivity(browserIntent);
+                }
+                startActivity(browserIntent);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
