@@ -77,9 +77,9 @@ public class WorkoutOverview extends AppCompatActivity {
         }
         mOverviewViewModel = new ViewModelProvider(this).get(WorkoutOverviewViewModel.class);
         mOverviewViewModel.getWorkouts(intentP.getIntExtra("cardID", 1)).observe(this, workoutDifficulties ->{
-            beginnerDescription.setText("Beginner\n");
-            intermediateDescription.setText("Intermediate\n");
-            advancedDescription.setText("Advanced\n");
+            beginnerDescription.setText("");
+            intermediateDescription.setText("");
+            advancedDescription.setText("");
             for (WorkoutDifficulty workoutDifficulty : workoutDifficulties){
                 mOverviewViewModel.getExercises(workoutDifficulty.getWorkoutID()).observe(this, exercises -> {
                     for (WorkoutExercise exercise : exercises) {

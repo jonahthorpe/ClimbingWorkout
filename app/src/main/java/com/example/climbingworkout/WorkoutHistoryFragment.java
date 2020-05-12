@@ -318,7 +318,6 @@ public class WorkoutHistoryFragment extends Fragment {
                             dayContainer.setPadding(0,Utility.dpToPx(10f,r),0,Utility.dpToPx(10f,r));
                             text.setOnClickListener(v -> {
                                 TextView text1 = view.findViewById(selectedId);
-                                Log.i("selected", selectedId + "");
                                 try{
                                 text1.setBackgroundResource(0);
                                 }catch (Exception ignored){

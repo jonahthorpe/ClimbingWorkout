@@ -106,7 +106,6 @@ public class LogIn extends AppCompatActivity {
         // get credentials
         email = emailInputField.getText().toString().trim();
         password = passwordInputField.getText().toString();
-        Log.i("email", email);
         // if email/password is entered, try log in
         if (!email.isEmpty() && !password.isEmpty()) {
             mAuth.signInWithEmailAndPassword(email, password)

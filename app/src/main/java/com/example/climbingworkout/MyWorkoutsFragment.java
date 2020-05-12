@@ -89,7 +89,6 @@ public class MyWorkoutsFragment extends Fragment {
                         ArrayList<String> thirdExercises = new ArrayList<>();
                         ArrayList<String> keys = new ArrayList<>();
                         for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                            //Log.i("qwerty", snapshot.getKey());
                             FirebaseWorkout workout = snapshot.getValue(FirebaseWorkout.class);
                             workoutNames.add(workout.getWorkout_name());
                             List<WorkoutExercise> exercises = workout.getExercises();

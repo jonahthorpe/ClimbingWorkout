@@ -61,7 +61,7 @@ public class WorkoutsFragment extends Fragment {
                         Utility.dpToPx(300f,r),
                         Utility.dpToPx(200f,r)
                 );
-                cardViewParams.setMarginEnd(Utility.dpToPx(10f,r));
+                cardViewParams.setMargins(0,0,Utility.dpToPx(10f,r),Utility.dpToPx(10f,r));
                 cardView.setLayoutParams(cardViewParams);
 
                 TextView textView = new TextView(getContext());
@@ -71,21 +71,24 @@ public class WorkoutsFragment extends Fragment {
                         CardView.LayoutParams.WRAP_CONTENT,
                         CardView.LayoutParams.WRAP_CONTENT
                 );
+
+
+
                 params.setMargins(
-                        Utility.dpToPx(5f, getResources()),
-                        Utility.dpToPx(5f, getResources()),
-                        Utility.dpToPx(0f, getResources()),
-                        Utility.dpToPx(0f, getResources())
+                        Utility.dpToPx(5f, r),
+                        Utility.dpToPx(5f, r),
+                        Utility.dpToPx(0f, r),
+                        Utility.dpToPx(0f, r)
                 );
                 textView.setLayoutParams(params);
                 textView.setTextSize(18);
                 //textView.setTextAppearance(getContext(), android.R.style.TextAppearance_DeviceDefault_Medium);
                 textView.setTextColor(Color.parseColor("#FFFFFF"));
                 textView.setPadding(
-                        Utility.dpToPx(10f, getResources()),
-                        Utility.dpToPx(5f, getResources()),
-                        Utility.dpToPx(10f, getResources()),
-                        Utility.dpToPx(5f, getResources())
+                        Utility.dpToPx(10f, r),
+                        Utility.dpToPx(5f, r),
+                        Utility.dpToPx(10f, r),
+                        Utility.dpToPx(5f, r)
                 );
                 ImageView image = new ImageView(getContext());
                 String uri = card.getImageName();
@@ -96,15 +99,15 @@ public class WorkoutsFragment extends Fragment {
 
                 cardView.addView(image);
                 cardView.addView(textView);
-
+                cardView.setElevation(Utility.dpToPx(5f, r));
                 cardView.setOnClickListener(v -> {
                     Intent intent = new Intent(getContext(), WorkoutOverview.class);
                     intent.putExtra("cardID", card.getCardID());
                     intent.putExtra("imageName", card.getImageName());
                     startActivity(intent);
                 });
-
                 cardRow.addView(cardView);
+                cardRow.setPadding(0,0,Utility.dpToPx(10f, r), 0);
             }
         });
         return view;

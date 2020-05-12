@@ -2,6 +2,7 @@ package com.example.climbingworkout;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -41,7 +42,6 @@ public class WorkoutListAdapter extends RecyclerView.Adapter<WorkoutListAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Log.i("size", position + "");
         holder.workoutName.setText( workoutNames.get(position));
         holder.exercise1.setText( firstExercises.get(position));
         holder.exercise2.setText( secondExercises.get(position));

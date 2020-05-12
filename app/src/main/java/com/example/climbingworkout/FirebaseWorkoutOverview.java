@@ -113,7 +113,6 @@ public class FirebaseWorkoutOverview extends AppCompatActivity {
             logButton.setOnClickListener(v -> {
                 FirebaseUser user1 = FirebaseAuth.getInstance().getCurrentUser();
                 if (user1 != null) {
-                    Log.i("username", user1.getUid());
                     FirebaseDatabase database1 = FirebaseDatabase.getInstance();
                     DatabaseReference myRef1 = database1.getReference("users/" + user1.getUid());
 

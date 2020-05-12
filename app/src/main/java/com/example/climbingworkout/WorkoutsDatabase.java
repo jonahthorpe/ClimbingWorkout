@@ -88,6 +88,30 @@ public abstract class WorkoutsDatabase extends RoomDatabase {
                 exerciseDao.insert(exercise);
                 exercise = new Exercise("Repeaters", "repeaters_no_sound");
                 exerciseDao.insert(exercise);
+                exercise = new Exercise("Weighted Pull Ups", "weighted_pull_up_no_sound");
+                exerciseDao.insert(exercise);
+                exercise = new Exercise("Typewriter Pull Ups", "typewriter_pull_up_no_sound");
+                exerciseDao.insert(exercise);
+                exercise = new Exercise("Archer Pull Ups", "archer_pull_up_no_sound");
+                exerciseDao.insert(exercise);
+                exercise = new Exercise("Decline Push Ups", "decline_push_up_no_sound");
+                exerciseDao.insert(exercise);
+                exercise = new Exercise("Planche Lean", "planche_lean_no_sound");
+                exerciseDao.insert(exercise);
+                exercise = new Exercise("Dips", "dip_no_sound");
+                exerciseDao.insert(exercise);
+                exercise = new Exercise("Toes to Bar", "toes_to_bar_no_sound");
+                exerciseDao.insert(exercise);
+                exercise = new Exercise("Hanging Knee Raises", "hanging_knee_raise_no_sound");
+                exerciseDao.insert(exercise);
+                exercise = new Exercise("Knee Ab Roller", "knee_ab_roller_no_sound");
+                exerciseDao.insert(exercise);
+                exercise = new Exercise("Hyperextensions", "hyperextension_no_sound");
+                exerciseDao.insert(exercise);
+                exercise = new Exercise("Hollow Body", "hollow_body_no_sound");
+                exerciseDao.insert(exercise);
+                exercise = new Exercise("Max Hang", "max_hangs_no_sound");
+                exerciseDao.insert(exercise);
 
 
                 WorkoutExerciseDao workoutExerciseDao = INSTANCE.workoutExerciseDao();
@@ -294,18 +318,36 @@ public abstract class WorkoutsDatabase extends RoomDatabase {
 
                 // advanced
                 difficulty = new WorkoutDifficulty(14, 5, "Advanced", "This workout is designed to increase your overall pulling strength. It is created for people who find doing five pull ups with 5 kg added to easy. To progress in this workout," +
-                        " you can gradually increase weight to keep the reps you perform around five. You can also try learn some hard body weight exercises like the front lever and one arm pull up. If you exercising at home and don't have weights, you can use water bottles.");
+                        " you can gradually increase weight to keep the reps you perform around five. You can also try learn some hard body weight exercises like the front lever and one arm pull up. If you exercising at home and don't have weights, you can use water bottles " +
+                        "and for rows, try lowering the bar you use.");
                 difficultyDao.insert(difficulty);
                 // exercise
+                    workoutExercise = new WorkoutExercise(14, "Scapular Pull Ups", 3, "5", Utility.REPS, 120, 1, 0, 0);
+                    workoutExerciseDao.insert(workoutExercise);
+                    workoutExercise = new WorkoutExercise(14, "Weighted Pull Ups", 3, "5", Utility.REPS, 180, 2, 0, 0);
+                    workoutExerciseDao.insert(workoutExercise);
+                    workoutExercise = new WorkoutExercise(14, "Body Weight Rows", 3, "5", Utility.REPS, 180, 3, 0, 0);
+                    workoutExerciseDao.insert(workoutExercise);
+                    workoutExercise = new WorkoutExercise(14, "Archer Pull Ups", 3, "3 each arm", Utility.REPS, 180, 4, 0, 0);
+                    workoutExerciseDao.insert(workoutExercise);
 
 
 
                 // intermediate
                 difficulty = new WorkoutDifficulty(15, 5, "Intermediate", "This workout is designed to increase your overall strength with pulling movements. It was created for people who find the beginner pull up routine too easy but can't do five pull ups with 5kg added." +
-                        " For the sets of pull ups, do as many as you can up to five with the weight added. Once you can do three sets of five pull ups, you can try the advanced workout. When adding, start with 1kg and gradually move up to 5. " +
-                        "If you exercising at home and don't have weights, you can use water bottles.");
+                        " For the sets of pull ups, do as many as you can up to five with the weight added. Once you can do three sets of five pull ups, you can try the advanced workout. When adding weight, start with 1kg and move up to 5kg. " +
+                        "If you exercising at home and don't have weights, you can use water bottles and for rows, try lowering the bar you use.");
                 difficultyDao.insert(difficulty);
-                // exercises
+                    // exercises
+                    // exercises
+                    workoutExercise = new WorkoutExercise(15, "Scapular Pull Ups", 3, "5", Utility.REPS, 180, 1, 0, 0);
+                    workoutExerciseDao.insert(workoutExercise);
+                    workoutExercise = new WorkoutExercise(15, "Weighted Pull Ups", 3, "5", Utility.REPS, 180, 2, 0, 0);
+                    workoutExerciseDao.insert(workoutExercise);
+                    workoutExercise = new WorkoutExercise(15, "Body Weight Rows", 3, "5", Utility.REPS, 180, 3, 0, 0);
+                    workoutExerciseDao.insert(workoutExercise);
+                    workoutExercise = new WorkoutExercise(15, "Typewriter Pull Ups", 3, "5", Utility.REPS, 180, 4, 0, 0);
+                    workoutExerciseDao.insert(workoutExercise);
 
             // push
             card = new WorkoutCard(6, "Push", "Strength", "@drawable/decline_push_up");
@@ -330,7 +372,15 @@ public abstract class WorkoutsDatabase extends RoomDatabase {
                         " you can gradually increase weight to keep the reps you perform around five. You can also try learn some hard body weight exercises like the handstands and planches. If you exercising at home and don't have weights, you can use water bottles or " +
                         "partner assistance.");
                 difficultyDao.insert(difficulty);
-                // exercise
+                    // exercise
+                    workoutExercise = new WorkoutExercise(17, "Dips", 3, "5", Utility.REPS, 180, 1, 0, 0);
+                    workoutExerciseDao.insert(workoutExercise);
+                    workoutExercise = new WorkoutExercise(17, "Decline Push Ups", 3, "7", Utility.REPS, 180, 2, 0, 0);
+                    workoutExerciseDao.insert(workoutExercise);
+                    workoutExercise = new WorkoutExercise(17, "Pike Push Ups", 3, "12", Utility.REPS, 180, 3, 0, 0);
+                    workoutExerciseDao.insert(workoutExercise);
+                    workoutExercise = new WorkoutExercise(17, "Planche Lean", 3, "15", Utility.TIME, 180, 4, 0, 0);
+                    workoutExerciseDao.insert(workoutExercise);
 
 
 
@@ -339,9 +389,18 @@ public abstract class WorkoutsDatabase extends RoomDatabase {
                         " For the sets of push ups, do as many as you can up to five with the weight added. Once you can do three sets of five push ups, you can try the advanced workout. When adding, start with 1kg and gradually move up to 5. " +
                         "If you exercising at home and don't have weights, you can use water bottles. You also use partner assistance");
                 difficultyDao.insert(difficulty);
-                // exercises
+                    // exercises
+                    workoutExercise = new WorkoutExercise(18, "Decline Push Ups", 3, "5", Utility.REPS, 180, 1, 0, 0);
+                    workoutExerciseDao.insert(workoutExercise);
+                    workoutExercise = new WorkoutExercise(18, "Pike Push Ups", 3, "10", Utility.REPS, 180, 2, 0, 0);
+                    workoutExerciseDao.insert(workoutExercise);
+                    workoutExercise = new WorkoutExercise(18, "Wide Push Ups", 3, "10", Utility.REPS, 180, 3, 0, 0);
+                    workoutExerciseDao.insert(workoutExercise);
+                    workoutExercise = new WorkoutExercise(18, "Narrow Push Ups", 3, "10", Utility.REPS, 180, 4, 0, 0);
+                    workoutExerciseDao.insert(workoutExercise);
 
-            // core
+
+                // core
             card = new WorkoutCard(7, "Core", "Strength", "@drawable/bruce_lee_dragon_flags");
             cardDao.insert(card);
                 // beginner
@@ -349,14 +408,33 @@ public abstract class WorkoutsDatabase extends RoomDatabase {
                         "For the timed exercises, try your best to complete the full time but don't worry if you can't." +
                         "Once you can comfortably complete this workout, you can move on to the intermediate workout.");
                 difficultyDao.insert(difficulty);
-                // exercises
+                    // exercises
+                    workoutExercise = new WorkoutExercise(19, "Crunches", 3, "10", Utility.REPS, 120, 1, 0, 0);
+                    workoutExerciseDao.insert(workoutExercise);
+                    workoutExercise = new WorkoutExercise(19, "Arch Ups", 3, "30", Utility.TIME, 120, 2, 0, 0);
+                    workoutExerciseDao.insert(workoutExercise);
+                    workoutExercise = new WorkoutExercise(19, "Plank", 3, "30", Utility.TIME, 120, 3, 0, 0);
+                    workoutExerciseDao.insert(workoutExercise);
+                    workoutExercise = new WorkoutExercise(19, "Side Plank Left", 2, "30", Utility.TIME, 120, 4, 0, 0);
+                    workoutExerciseDao.insert(workoutExercise);
+                    workoutExercise = new WorkoutExercise(19, "Side Plank Right", 2, "30", Utility.TIME, 120, 5, 0, 0);
+                    workoutExerciseDao.insert(workoutExercise);
 
 
                 // advanced
                 difficulty = new WorkoutDifficulty(20, 7, "Advanced", "This workout is developed for people very comfortable with core training. It is designed to improve how tension on the wall build overall strength of the core." +
-                        " To make this workout harder, you can increase the amount of set and reps you complete. You can also add weight or raise your legs when applicable.");
+                        " To make this workout harder, you can increase the amount of set and reps you complete. You can also add weight or try harder body weight exercise like the standing ab roller and dragon flags. Hyperextensions can be done off a chair" +
+                        "with your legs locked under a table if you are working out from home. ");
                 difficultyDao.insert(difficulty);
-                // exercise
+                    // exercises
+                    workoutExercise = new WorkoutExercise(20, "Toes to Bar", 3, "10", Utility.REPS, 180, 1, 0, 0);
+                    workoutExerciseDao.insert(workoutExercise);
+                    workoutExercise = new WorkoutExercise(20, "Knee Ab Roller", 3, "10", Utility.REPS, 180, 2, 0, 0);
+                    workoutExerciseDao.insert(workoutExercise);
+                    workoutExercise = new WorkoutExercise(20, "Hyperextensions", 3, "10", Utility.REPS, 180, 3, 0, 0);
+                    workoutExerciseDao.insert(workoutExercise);
+                    workoutExercise = new WorkoutExercise(20, "Hollow Body", 3, "45", Utility.TIME, 180, 4, 0, 0);
+                    workoutExerciseDao.insert(workoutExercise);
 
 
 
@@ -364,16 +442,29 @@ public abstract class WorkoutsDatabase extends RoomDatabase {
                 difficulty = new WorkoutDifficulty(21, 7, "Intermediate", "This workout is developed for people somewhat comfortable with core training. It is designed to improve how tension on the wall build overall strength of the core." +
                         "Once you can complete this workout comfortably, you can move onto the advanced workout.");
                 difficultyDao.insert(difficulty);
-                // exercises
+                    // exercises
+                    workoutExercise = new WorkoutExercise(21, "Hanging Knee Raises", 3, "5", Utility.REPS, 180, 1, 0, 0);
+                    workoutExerciseDao.insert(workoutExercise);
+                    workoutExercise = new WorkoutExercise(21, "Knee Ab Roller", 3, "5", Utility.REPS, 180, 2, 0, 0);
+                    workoutExerciseDao.insert(workoutExercise);
+                    workoutExercise = new WorkoutExercise(21, "Hollow Body", 3, "45", Utility.TIME, 180, 3, 0, 0);
+                    workoutExerciseDao.insert(workoutExercise);
+                    workoutExercise = new WorkoutExercise(21, "Arch Ups", 3, "45", Utility.TIME, 180, 4, 0, 0);
+                    workoutExerciseDao.insert(workoutExercise);
 
-            // fingers
+
+
+                // fingers
             card = new WorkoutCard(8, "Finger", "Strength", "@drawable/alexhonnoldhangboard");
             cardDao.insert(card);
                 // beginner
                 difficulty = new WorkoutDifficulty(22, 8, "Beginner", "This workout is designed to develop the necessary strength to complete more specific workouts as well as to get use to hangboarding. It was created for people who new to hangboarding. Use an edge size around 20 mm. " +
-                        "You should use variety grips types through out the workout, such as : 4 fingers crimp, 4 fingers open, front 3 open and back 3 open. If this is too difficult, you can reduce the amount sets you perform as well reducing your weight with a pulley system.");
+                        "You should use variety grips types through out the workout, such as : 4 fingers crimp, 4 fingers open, front 3 open and back 3 open. If this is too difficult, you can reduce the amount sets you perform as well reducing your weight with a pulley system." +
+                        "The weight added should have you hanging for around 7 second at maximal effort.");
                 difficultyDao.insert(difficulty);
                     // exercises
+                    workoutExercise = new WorkoutExercise(22, "Max Hang", 3, "7", Utility.TIME, 180, 1, 0, 0);
+                    workoutExerciseDao.insert(workoutExercise);
 
 
 
@@ -382,15 +473,20 @@ public abstract class WorkoutsDatabase extends RoomDatabase {
                         " Use an edge size around 20 mm. You should use variety grips types through out the workout, such as : 4 fingers crimp, 4 fingers open, front 3 open and back 3 open. To make this harder, you can increase the amount of sets you complete, " +
                         "as well as adding weight to your body. You can also try different style of strength workouts such as one arm hangs.");
                 difficultyDao.insert(difficulty);
-                    // exercise
+                    // exercises
+                    workoutExercise = new WorkoutExercise(23, "Max Hang", 7, "7", Utility.TIME, 180, 1, 0, 0);
+                    workoutExerciseDao.insert(workoutExercise);
 
 
 
                 // intermediate
                 difficulty = new WorkoutDifficulty(24, 8, "Intermediate", "This workout is developed for people somewhat comfortable with hangboarding. It is designed to help you hold on to smaller holds and steeper angels." +
-                        " Use an edge size around 20 mm. You should use variety grips types through out the workout, such as : 4 fingers crimp, 4 fingers open, front 3 open and back 3 open. Once you can complete this workout comfortably, you can move onto the advanced workout.");
+                        " Use an edge size around 20 mm. You should use variety grips types through out the workout, such as : 4 fingers crimp, 4 fingers open, front 3 open and back 3 open. Once you can complete this workout comfortably, you can move onto the advanced workout." +
+                        "The weight added should have you hanging for around 7 second at maximal effort.");
                 difficultyDao.insert(difficulty);
                     // exercises
+                    workoutExercise = new WorkoutExercise(24, "Max Hang", 5, "7", Utility.TIME, 180, 1, 0, 0);
+                    workoutExerciseDao.insert(workoutExercise);
 
             // power
             // pull
@@ -401,6 +497,10 @@ public abstract class WorkoutsDatabase extends RoomDatabase {
                         " moves while climbing. If this is to hard, try build some foundation strength with the strength workouts as well as lowering the overall volume. When you can comfortably complete this workout, you can move onto the intermediate one.");
                 difficultyDao.insert(difficulty);
                     // exercises
+                    workoutExercise = new WorkoutExercise(25, "Campus Laddering", 4, "1 up 1 down", Utility.REPS, 180, 1, 0, 0);
+                    workoutExerciseDao.insert(workoutExercise);
+                    workoutExercise = new WorkoutExercise(25, "Fast Pull Ups", 4, "5", Utility.REPS, 180, 2, 0, 0);
+                    workoutExerciseDao.insert(workoutExercise);
 
 
 
@@ -409,6 +509,12 @@ public abstract class WorkoutsDatabase extends RoomDatabase {
                         " or experiment with new explosive exercises.");
                 difficultyDao.insert(difficulty);
                     // exercise
+                    workoutExercise = new WorkoutExercise(26, "Muscle Ups", 3, "5", Utility.REPS, 180, 1, 0, 0);
+                    workoutExerciseDao.insert(workoutExercise);
+                    workoutExercise = new WorkoutExercise(26, "Double Dynos", 3, "5", Utility.REPS, 180, 2, 0, 0);
+                    workoutExerciseDao.insert(workoutExercise);
+                    workoutExercise = new WorkoutExercise(26, "1-4-7", 3, "1 each arm", Utility.REPS, 180, 3, 0, 0);
+                    workoutExerciseDao.insert(workoutExercise);
 
 
 
@@ -417,6 +523,12 @@ public abstract class WorkoutsDatabase extends RoomDatabase {
                         "rest time. When you can comfortably complete this workout, you can move onto the advanced one.");
                 difficultyDao.insert(difficulty);
                     // exercises
+                    workoutExercise = new WorkoutExercise(27, "Clap Pull Ups", 3, "5", Utility.REPS, 180, 1, 0, 0);
+                    workoutExerciseDao.insert(workoutExercise);
+                    workoutExercise = new WorkoutExercise(27, "up Downs", 3, "5", Utility.REPS, 180, 2, 0, 0);
+                    workoutExerciseDao.insert(workoutExercise);
+                    workoutExercise = new WorkoutExercise(27, "Campus Bouldering", 3, "2", Utility.REPS, 180, 3, 0, 0);
+                    workoutExerciseDao.insert(workoutExercise);
 
             // push
             card = new WorkoutCard(10, "Push", "Power", "@drawable/plyometric_pushups");
@@ -426,6 +538,10 @@ public abstract class WorkoutsDatabase extends RoomDatabase {
                         " moves while climbing. If this is to hard, try build some foundation strength with the strength workouts as well as lowering the overall volume. When you can comfortably complete this workout, you can move onto the intermediate one.");
                 difficultyDao.insert(difficulty);
                     // exercises
+                    workoutExercise = new WorkoutExercise(28, "Plyo Push Up", 3, "5", Utility.REPS, 180, 1, 0, 0);
+                    workoutExerciseDao.insert(workoutExercise);
+                    workoutExercise = new WorkoutExercise(28, "Plyo Pike Push Up", 3, "5", Utility.REPS, 180, 2, 0, 0);
+                    workoutExerciseDao.insert(workoutExercise);
 
 
 
@@ -434,14 +550,22 @@ public abstract class WorkoutsDatabase extends RoomDatabase {
                         " or experiment with new explosive exercises.");
                 difficultyDao.insert(difficulty);
                     // exercise
+                    workoutExercise = new WorkoutExercise(29, "Super Man Push Up", 3, "5", Utility.REPS, 180, 1, 0, 0);
+                    workoutExerciseDao.insert(workoutExercise);
+                    workoutExercise = new WorkoutExercise(29, "Clap Pike Push Up", 3, "5", Utility.REPS, 180, 2, 0, 0);
+                    workoutExerciseDao.insert(workoutExercise);
 
 
 
                 // intermediate
-                difficulty = new WorkoutDifficulty(39, 10, "Intermediate", "This workout is designed to increase you power in pushing motions. This workout will help with dynamic and big moves while climbing. If this is too hard you can try decreasing volume and increasing " +
+                difficulty = new WorkoutDifficulty(30, 10, "Intermediate", "This workout is designed to increase you power in pushing motions. This workout will help with dynamic and big moves while climbing. If this is too hard you can try decreasing volume and increasing " +
                         "rest time. When you can comfortably complete this workout, you can move onto the advanced one.");
                 difficultyDao.insert(difficulty);
                     // exercises
+                    workoutExercise = new WorkoutExercise(30, "Clap Push Up", 3, "5", Utility.REPS, 180, 1, 0, 0);
+                    workoutExerciseDao.insert(workoutExercise);
+                    workoutExercise = new WorkoutExercise(30, "Clap Pike Push Up", 3, "5", Utility.REPS, 180, 2, 0, 0);
+                    workoutExerciseDao.insert(workoutExercise);
             // core
             card = new WorkoutCard(11, "Core", "Power", "@drawable/kettle_bell_swing");
             cardDao.insert(card);
